@@ -47,8 +47,11 @@ func (c *Client) doRequest(req *http.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	if resp.StatusCode != 200 {
+
+	switch resp.StatusCode {
+	case 200:
+		return body, nil
+	default:
 		return nil, fmt.Errorf("%s", body)
 	}
-	return body, nil
 }

@@ -32,7 +32,7 @@ func (c *Client) RevokeAPIKey(apiKey *RevokeAPIKeyRequest, ctx context.Context) 
 }
 
 type APIKeyResponse struct {
-	APIKey      *RevokeAPIKeyRequest
+	APIKey      string   `json:"apiKey"`
 	Label       string   `json:"label"`
 	Permissions []string `json:"permissions"` // maybe change to struct?
 }

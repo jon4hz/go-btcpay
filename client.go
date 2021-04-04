@@ -8,14 +8,16 @@ import (
 	"net/http"
 )
 
+type APIKey string
+
 type Client struct {
 	URL      string
-	APIKey   string
+	APIKey   APIKey
 	Username string
 	Password string
 }
 
-func NewClient(url, apiKey string) *Client {
+func NewClient(url string, apiKey APIKey) *Client {
 	return &Client{
 		URL:    url,
 		APIKey: apiKey,

@@ -8,12 +8,8 @@ import (
 	"net/http"
 )
 
-type RevokeAPIKeyRequest struct {
-	APIKey string `json:"apiKey"`
-}
-
-func (c *Client) RevokeAPIKey(apiKey *RevokeAPIKeyRequest, ctx context.Context) error {
-	endpoint := fmt.Sprintf("%s/api/v1/api-keys/%s", c.URL, apiKey.APIKey)
+func (c *Client) RevokeAPIKey(apiKey APIKey, ctx context.Context) error {
+	endpoint := fmt.Sprintf("%s/api/v1/api-keys/%s", c.URL, apiKey)
 	dataReq, err := json.Marshal(apiKey)
 	if err != nil {
 		return err
@@ -32,9 +28,9 @@ func (c *Client) RevokeAPIKey(apiKey *RevokeAPIKeyRequest, ctx context.Context) 
 }
 
 type APIKeyResponse struct {
-	APIKey      string           `json:"apiKey"`
-	Label       string           `json:"label"`
-	Permissions []Authentication `json:"permissions"`
+	APIKey      APIKey       `json:"apiKey"`
+	Label       string       `json:"label"`
+	Permissions []Permission `json:"permissions"`
 }
 
 func (c *Client) GetCurrentAPIKey(ctx context.Context) (*APIKeyResponse, error) {
@@ -76,8 +72,8 @@ func (c *Client) RevokeCurrentAPIKey(ctx context.Context) (*APIKeyResponse, erro
 }
 
 type CreateAPIKeyRequest struct {
-	Label       string           `json:"label,omitempty"`
-	Permissions []Authentication `json:"permissions,omitempty"`
+	Label       string       `json:"label,omitempty"`
+	Permissions []Permission `json:"permissions,omitempty"`
 }
 
 func (c *Client) CreateAPIKey(apiKeyRequest *CreateAPIKeyRequest, ctx context.Context) (*APIKeyResponse, error) {

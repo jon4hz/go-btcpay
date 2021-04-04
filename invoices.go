@@ -10,17 +10,17 @@ import (
 )
 
 type InvoicesResponse struct {
-	Amount           string           `json:"amount,omitempty"`
-	Currency         string           `json:"currency,omitempty"`
-	Metadata         *InvoiceMetadata `json:"metadata,omitempty"`
-	Checkout         *InvoiceCheckout `json:"checkout,omitempty"`
-	ID               string           `json:"id"`
-	CheckoutLink     string           `json:"checkoutLink"`
-	CreatedTime      int64            `json:"createdTime"`
-	ExpirationTime   int64            `json:"expirationTime"`
-	MonitoringTime   int64            `json:"monitoringTime"`
-	Status           string           `json:"status"`
-	AdditionalStatus string           `json:"additionalStatus"`
+	Amount           string          `json:"amount,omitempty"`
+	Currency         string          `json:"currency,omitempty"`
+	Metadata         InvoiceMetadata `json:"metadata,omitempty"`
+	Checkout         InvoiceCheckout `json:"checkout,omitempty"`
+	ID               string          `json:"id"`
+	CheckoutLink     string          `json:"checkoutLink"`
+	CreatedTime      int64           `json:"createdTime"`
+	ExpirationTime   int64           `json:"expirationTime"`
+	MonitoringTime   int64           `json:"monitoringTime"`
+	Status           string          `json:"status"`
+	AdditionalStatus string          `json:"additionalStatus"`
 }
 
 type InvoiceMetadata struct {

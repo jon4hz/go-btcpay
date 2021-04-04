@@ -10,7 +10,7 @@ import (
 type ServerInfoResponse struct {
 	Version                 string             `json:"version"`
 	Onion                   string             `json:"onion"`
-	SupportedPaymentMethods []string           `json:"supportedPaymentMethods"` // maybe change to type
+	SupportedPaymentMethods []string           `json:"supportedPaymentMethods"`
 	FullySynched            bool               `json:"fullySynched"`
 	SyncStatus              []ServerSyncStatus `json:"syncStatus"`
 }

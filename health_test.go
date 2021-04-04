@@ -5,17 +5,7 @@ import (
 )
 
 // change url to valid
-func TestValidHealthReponseWithBasicClient(t *testing.T) {
-	client := NewBasicClient("https://docs.btcpayserver.com", "", "")
-	_, err := client.GetHealth()
-	if err != nil {
-		t.Error("Error while getting the health status: ", err)
-	}
-
-}
-
-// change url to valid
-func TestValidHealthReponseWithAPIClient(t *testing.T) {
+func TestValidHealthReponse(t *testing.T) {
 	client := NewClient("https://docs.btcpayserver.com", "")
 	_, err := client.GetHealth()
 	if err != nil {
@@ -24,16 +14,7 @@ func TestValidHealthReponseWithAPIClient(t *testing.T) {
 
 }
 
-func TestInvalidHealthReponseWithBasicClient(t *testing.T) {
-	client := NewBasicClient("https://docs.btcpayserver.com", "", "")
-	_, err := client.GetHealth()
-	if err == nil {
-		// change error message
-		t.Error("Error while getting the health status: ", err)
-	}
-
-}
-func TestInvalidHealthReponseWithAPIClient(t *testing.T) {
+func TestInvalidHealthReponse(t *testing.T) {
 	client := NewClient("https://docs.btcpayserver.com", "")
 	_, err := client.GetHealth()
 	if err == nil {
@@ -43,16 +24,7 @@ func TestInvalidHealthReponseWithAPIClient(t *testing.T) {
 
 }
 
-func TestInvalidRequestHealthReponseWithBasicClient(t *testing.T) {
-	client := NewBasicClient("", "", "")
-	_, err := client.GetHealth()
-	if err == nil {
-		// change error message
-		t.Error("Error while getting the health status: ", err)
-	}
-
-}
-func TestInvalidRequestHealthReponseWithAPIClient(t *testing.T) {
+func TestInvalidRequestHealthReponse(t *testing.T) {
 	client := NewClient("", "")
 	_, err := client.GetHealth()
 	if err == nil {

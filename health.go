@@ -6,11 +6,11 @@ import (
 	"net/http"
 )
 
-type BTCPayHealthResponse struct {
+type HealthResponse struct {
 	Synchronized bool `json:"synchronized"`
 }
 
-func (c *Client) GetHealth() (*BTCPayHealthResponse, error) {
+func (c *Client) GetHealth() (*HealthResponse, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/health", c.URL)
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
@@ -20,25 +20,7 @@ func (c *Client) GetHealth() (*BTCPayHealthResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	var data BTCPayHealthResponse
-	err = json.Unmarshal(bytes, &data)
-	if err != nil {
-		return nil, err
-	}
-	return &data, nil
-}
-
-func (c *BasicClient) GetHealth() (*BTCPayHealthResponse, error) {
-	endpoint := fmt.Sprintf("%s/api/v1/health", c.URL)
-	req, err := http.NewRequest("GET", endpoint, nil)
-	if err != nil {
-		return nil, err
-	}
-	bytes, err := c.doRequest(req)
-	if err != nil {
-		return nil, err
-	}
-	var data BTCPayHealthResponse
+	var data HealthResponse
 	err = json.Unmarshal(bytes, &data)
 	if err != nil {
 		return nil, err

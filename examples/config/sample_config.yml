@@ -1,0 +1,4 @@
+BTCPayServer:
+  url: "https://yourbtcpayserver.com"
+  username: yourEmail
+  password: yourPassword

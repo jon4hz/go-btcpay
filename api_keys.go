@@ -13,7 +13,7 @@ type RevokeAPIKeyRequest struct {
 }
 
 func (c *Client) RevokeAPIKey(apiKey *RevokeAPIKeyRequest, ctx context.Context) error {
-	endpoint := fmt.Sprintf("%s/api/v1/api-keys/%s", c.URL, *apiKey)
+	endpoint := fmt.Sprintf("%s/api/v1/api-keys/%s", c.URL, apiKey.APIKey)
 	dataReq, err := json.Marshal(apiKey)
 	if err != nil {
 		return err
@@ -32,9 +32,9 @@ func (c *Client) RevokeAPIKey(apiKey *RevokeAPIKeyRequest, ctx context.Context) 
 }
 
 type APIKeyResponse struct {
-	APIKey      string   `json:"apiKey"`
-	Label       string   `json:"label"`
-	Permissions []string `json:"permissions"` // maybe change to struct?
+	APIKey      string           `json:"apiKey"`
+	Label       string           `json:"label"`
+	Permissions []Authentication `json:"permissions"` // maybe change to struct?
 }
 
 func (c *Client) GetCurrentAPIKey(ctx context.Context) (*APIKeyResponse, error) {
@@ -76,8 +76,8 @@ func (c *Client) RevokeCurrentAPIKey(ctx context.Context) (*APIKeyResponse, erro
 }
 
 type CreateAPIKeyRequest struct {
-	Label       string   `json:"label,omitempty"`
-	Permissions []string `json:"permissions,omitempty"` // maybe change to struct?
+	Label       string           `json:"label,omitempty"`
+	Permissions []Authentication `json:"permissions,omitempty"` // maybe change to struct?
 }
 
 func (c *Client) CreateAPIKey(apiKeyRequest *CreateAPIKeyRequest, ctx context.Context) (*APIKeyResponse, error) {

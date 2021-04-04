@@ -1,5 +1,7 @@
 package btcpay
 
+// WIP (webhooks?)
+
 import (
 	"fmt"
 	"io/ioutil"

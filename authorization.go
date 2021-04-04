@@ -1,10 +1,12 @@
 package btcpay
 
-type BTCPayAuthorizationRequest struct {
-	permissions           []string
-	applicationName       string
-	strict                bool
-	selectiveStores       bool
-	redirect              string
-	applicationIdentifier string
+// WIP
+
+type AuthorizationRequest struct {
+	Permissions           []string
+	ApplicationName       string
+	Strict                bool
+	SelectiveStores       bool
+	Redirect              string
+	ApplicationIdentifier string
 }

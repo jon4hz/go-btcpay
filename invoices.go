@@ -1,6 +1,9 @@
 package btcpay
 
+// WIP
+
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -43,12 +46,17 @@ type InvoiceCheckout struct {
 	DefaultLanguage   string      `json:"defaultLanguage,omitempty"`
 }
 
-func (c *Client) GetInvoices(storeID string) (*InvoicesResponse, error) {
-	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", c.URL, storeID)
+type GetInvoicesRequest struct {
+	StoreID string `json:"storeId"`
+}
+
+func (c *Client) GetInvoices(invoiceReq *GetInvoicesRequest, ctx context.Context) (*InvoicesResponse, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", c.URL, invoiceReq)
 	req, err := http.NewRequest("GET", endpoint, nil)
 	if err != nil {
 		return nil, err
 	}
+	req = req.WithContext(ctx)
 	bytes, err := c.doRequest(req)
 	if err != nil {
 		return nil, err

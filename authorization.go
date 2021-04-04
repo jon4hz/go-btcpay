@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// WIP
+// WIP, needs testing
 
 type AuthorizationRequest struct {
 	Permissions           []Permission `json:"permissions,omitempty"`

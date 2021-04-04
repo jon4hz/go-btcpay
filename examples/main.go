@@ -21,21 +21,21 @@ func main() {
 
 	// create new APIKey
 	apiKey, err := client.CreateAPIKey(&btcpay.CreateAPIKeyRequest{
-		Permissions: []btcpay.Authentication{client.CreateRestrictedKey(btcpay.BTCPayStoreCanviewinvoices, "66tU3WhCAcsbocA3EmUXHE96XsoVQjWMUiTp3s6LLYAn")},
+		Permissions: []btcpay.Permission{client.CreateRestrictedKey(btcpay.BTCPayStoreCanviewinvoices, "66tU3WhCAcsbocA3EmUXHE96XsoVQjWMUiTp3s6LLYAn")},
 	}, ctx)
 	if err != nil {
 		panic(err)
 	}
 
 	// delete the new APIKey
-	err = client.RevokeAPIKey(&btcpay.RevokeAPIKeyRequest{APIKey: apiKey.APIKey}, ctx)
+	err = client.RevokeAPIKey(apiKey.APIKey, ctx)
 	if err != nil {
 		panic(err)
 	}
 
 	// create new APIKey
 	apiKey, err = client.CreateAPIKey(&btcpay.CreateAPIKeyRequest{
-		Permissions: []btcpay.Authentication{client.CreateRestrictedKey(btcpay.BTCPayStoreCanviewinvoices, "66tU3WhCAcsbocA3EmUXHE96XsoVQjWMUiTp3s6LLYAn")},
+		Permissions: []btcpay.Permission{client.CreateRestrictedKey(btcpay.BTCPayStoreCanviewinvoices, "66tU3WhCAcsbocA3EmUXHE96XsoVQjWMUiTp3s6LLYAn")},
 	}, ctx)
 	if err != nil {
 		panic(err)

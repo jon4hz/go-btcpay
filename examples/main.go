@@ -19,6 +19,8 @@ func main() {
 	client := btcpay.NewBasicClient(config.BTCPay.URL, config.BTCPay.Username, config.BTCPay.Password)
 	fmt.Println(client.GetHealth(ctx))
 
+	fmt.Println(client.GetServerInfo(ctx))
+
 	// create new APIKey
 	apiKey, err := client.CreateAPIKey(&btcpay.CreateAPIKeyRequest{
 		Permissions: []btcpay.Permission{client.CreateRestrictedKey(btcpay.BTCPayStoreCanviewinvoices, "66tU3WhCAcsbocA3EmUXHE96XsoVQjWMUiTp3s6LLYAn")},

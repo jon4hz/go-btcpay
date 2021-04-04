@@ -36,6 +36,7 @@ func (c *Client) doRequest(req *http.Request) ([]byte, error) {
 	} else if len(c.Username) > 0 && len(c.Password) > 0 {
 		req.SetBasicAuth(c.Username, c.Password)
 	}
+	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

@@ -27,6 +27,6 @@ const (
 	BTCPayStoreCancreatelightninginvoice Permission = "btcpay.store.cancreatelightninginvoice"
 )
 
-func (c *Client) CreateRestrictedKey(permission Permission, apistoreID string) Permission {
-	return Permission(fmt.Sprintf("%s:%s", permission, apistoreID))
+func (c *Client) CreateRestrictedKey(permission Permission, storeID StoreID) Permission {
+	return Permission(fmt.Sprintf("%s:%s", permission, storeID))
 }

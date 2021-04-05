@@ -30,11 +30,11 @@ func TestInvalidHealthReponse(t *testing.T) {
 
 }
 
-func TestInvalidRequestHealthReponse(t *testing.T) {
+func TestInvalidContextRequestHealthReponse(t *testing.T) {
 	client := NewClient("", "")
-	req, err := client.GetHealth(context.Background())
+	req, err := client.GetHealth(nil)
 	if err == nil {
-		t.Error("Should have thrown an error because URL is invalid: expected nil, got ", req)
+		t.Error("Should have thrown an error because context is nil: expected error, got ", req)
 	}
 
 }

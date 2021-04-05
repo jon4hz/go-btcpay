@@ -14,11 +14,10 @@ func (c *Client) RevokeAPIKey(apiKey APIKey, ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	req, err := http.NewRequest("DELETE", endpoint, bytes.NewBuffer(dataReq))
+	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, bytes.NewBuffer(dataReq))
 	if err != nil {
 		return err
 	}
-	req = req.WithContext(ctx)
 	_, err = c.doRequest(req)
 	if err != nil {
 		return err
@@ -35,11 +34,10 @@ type APIKeyResponse struct {
 
 func (c *Client) GetCurrentAPIKey(ctx context.Context) (*APIKeyResponse, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys/current", c.URL)
-	req, err := http.NewRequest("GET", endpoint, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
 		return nil, err
 	}
-	req = req.WithContext(ctx)
 	bytes, err := c.doRequest(req)
 	if err != nil {
 		return nil, err
@@ -54,11 +52,10 @@ func (c *Client) GetCurrentAPIKey(ctx context.Context) (*APIKeyResponse, error) 
 
 func (c *Client) RevokeCurrentAPIKey(ctx context.Context) (*APIKeyResponse, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys/current", c.URL)
-	req, err := http.NewRequest("DELETE", endpoint, nil)
+	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {
 		return nil, err
 	}
-	req = req.WithContext(ctx)
 	bytes, err := c.doRequest(req)
 	if err != nil {
 		return nil, err
@@ -82,11 +79,10 @@ func (c *Client) CreateAPIKey(apiKeyRequest *CreateAPIKeyRequest, ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequest("POST", endpoint, bytes.NewBuffer(dataReq))
+	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, bytes.NewBuffer(dataReq))
 	if err != nil {
 		return nil, err
 	}
-	req = req.WithContext(ctx)
 	bytes, err := c.doRequest(req)
 	if err != nil {
 		return nil, err

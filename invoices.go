@@ -50,18 +50,17 @@ type GetInvoicesRequest struct {
 	StoreID string `json:"storeId"`
 }
 
-func (c *Client) GetInvoices(invoiceReq *GetInvoicesRequest, ctx context.Context) (*InvoicesResponse, error) {
+func (c *Client) GetInvoices(invoiceReq *GetInvoicesRequest, ctx context.Context) (*[]InvoicesResponse, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", c.URL, invoiceReq)
-	req, err := http.NewRequest("GET", endpoint, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
 		return nil, err
 	}
-	req = req.WithContext(ctx)
 	bytes, err := c.doRequest(req)
 	if err != nil {
 		return nil, err
 	}
-	var data InvoicesResponse
+	var data []InvoicesResponse
 	err = json.Unmarshal(bytes, &data)
 	if err != nil {
 		return nil, err

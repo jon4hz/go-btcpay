@@ -30,11 +30,10 @@ type ServerNodeInformation struct {
 
 func (c *Client) GetServerInfo(ctx context.Context) (*ServerInfoResponse, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/server/info", c.URL)
-	req, err := http.NewRequest("GET", endpoint, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
 		return nil, err
 	}
-	req = req.WithContext(ctx)
 	bytes, err := c.doRequest(req)
 	if err != nil {
 		return nil, err

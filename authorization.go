@@ -25,11 +25,10 @@ func (c *Client) Authorize(authRequest *AuthorizationRequest, ctx context.Contex
 	if err != nil {
 		return err
 	}
-	req, err := http.NewRequest("POST", endpoint, bytes.NewBuffer(dataReq))
+	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, bytes.NewBuffer(dataReq))
 	if err != nil {
 		return err
 	}
-	req = req.WithContext(ctx)
 	_, err = c.doRequest(req)
 	if err != nil {
 		return err

@@ -23,9 +23,9 @@ func (c *Client) RevokeAPIKey(apiKey *APIKey, ctx context.Context) (int, error) 
 }
 
 type APIKeyResponse struct {
-	APIKey      APIKey       `json:"apiKey"`
-	Label       string       `json:"label"`
-	Permissions []Permission `json:"permissions"`
+	APIKey      APIKey             `json:"apiKey"`
+	Label       string             `json:"label"`
+	Permissions []BTCPayPermission `json:"permissions"`
 }
 
 func (c *Client) GetCurrentAPIKey(ctx context.Context) (*APIKeyResponse, int, error) {
@@ -65,8 +65,8 @@ func (c *Client) RevokeCurrentAPIKey(ctx context.Context) (*APIKeyResponse, int,
 }
 
 type CreateAPIKeyRequest struct {
-	Label       string       `json:"label,omitempty"`
-	Permissions []Permission `json:"permissions,omitempty"`
+	Label       string             `json:"label,omitempty"`
+	Permissions []BTCPayPermission `json:"permissions,omitempty"`
 }
 
 func (c *Client) CreateAPIKey(apiKeyRequest *CreateAPIKeyRequest, ctx context.Context) (*APIKeyResponse, int, error) {

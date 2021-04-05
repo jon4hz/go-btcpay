@@ -2,31 +2,58 @@ package btcpay
 
 import "fmt"
 
-type Permission string
+type BTCPayPermission string
 
-const (
-	Unrestricted                            Permission = "unrestricted"
-	BTCPayUserCanviewprofile                Permission = "btcpay.user.canviewprofile"
-	BTCPayUserCanmodifyprofile              Permission = "btcpay.user.canmodifyprofile"
-	BTCPayUserCanmanagenotificationsforuser Permission = "btcpay.user.canmanagenotificationsforuser"
-	BTCPayUserCanviewnotificationsforuser   Permission = "btcpay.user.canviewnotificationsforuser"
+type Permission struct {
+	Unrestricted                      BTCPayPermission
+	UserCanviewprofile                BTCPayPermission
+	UserCanmodifyprofile              BTCPayPermission
+	UserCanmanagenotificationsforuser BTCPayPermission
+	UserCanviewnotificationsforuser   BTCPayPermission
 
-	BTCPayServerCancreateuser                         Permission = "btcpay.server.cancreateuser"
-	BTCPayServerCanmodifyserversettings               Permission = "btcpay.server.canmodifyserversettings"
-	BTCPayServerCanuseinternallightningnode           Permission = "btcpay.server.canuseinternallightningnode"
-	BTCPayServerCancreatelightninginvoiceinternalnode Permission = "btcpay.server.cancreatelightninginvoiceinternalnode"
+	ServerCancreateuser                         BTCPayPermission
+	ServerCanmodifyserversettings               BTCPayPermission
+	ServerCanuseinternallightningnode           BTCPayPermission
+	ServerCancreatelightninginvoiceinternalnode BTCPayPermission
 
-	BTCPayStoreCanmodifystoresettings    Permission = "btcpay.store.canmodifystoresettings"
-	BTCPayStoreWebhooksCanmodifywebhooks Permission = "btcpay.store.webhooks.canmodifywebhooks"
-	BTCPayStoreCanviewstoresettings      Permission = "btcpay.store.canviewstoresettings"
-	BTCPayStoreCancreateinvoice          Permission = "btcpay.store.cancreateinvoice"
-	BTCPayStoreCanviewinvoices           Permission = "btcpay.store.canviewinvoices"
-	BTCPayStoreCanmodifypaymentrequests  Permission = "btcpay.store.canmodifypaymentrequests"
-	BTCPayStoreCanviewpaymentrequests    Permission = "btcpay.store.canviewpaymentrequests"
-	BTCPayStoreCanuselightningnode       Permission = "btcpay.store.canuselightningnode"
-	BTCPayStoreCancreatelightninginvoice Permission = "btcpay.store.cancreatelightninginvoice"
-)
+	StoreCanmodifystoresettings    BTCPayPermission
+	StoreWebhooksCanmodifywebhooks BTCPayPermission
+	StoreCanviewstoresettings      BTCPayPermission
+	StoreCancreateinvoice          BTCPayPermission
+	StoreCanviewinvoices           BTCPayPermission
+	StoreCanmodifypaymentrequests  BTCPayPermission
+	StoreCanviewpaymentrequests    BTCPayPermission
+	StoreCanuselightningnode       BTCPayPermission
+	StoreCancreatelightninginvoice BTCPayPermission
+	CustomPermission               BTCPayPermission
+}
 
-func (c *Client) CreateRestrictedKey(permission Permission, storeID StoreID) Permission {
-	return Permission(fmt.Sprintf("%s:%s", permission, storeID))
+func GetPermission() *Permission {
+	return &Permission{
+		Unrestricted: "unrestricted",
+
+		UserCanviewprofile:                "btcpay.user.canviewprofile",
+		UserCanmodifyprofile:              "btcpay.user.canmodifyprofile",
+		UserCanmanagenotificationsforuser: "btcpay.user.canmanagenotificationsforuser",
+		UserCanviewnotificationsforuser:   "btcpay.user.canviewnotificationsforuser",
+
+		ServerCancreateuser:                         "btcpay.server.cancreateuser",
+		ServerCanmodifyserversettings:               "btcpay.server.canmodifyserversettings",
+		ServerCanuseinternallightningnode:           "btcpay.server.canuseinternallightningnode",
+		ServerCancreatelightninginvoiceinternalnode: "btcpay.server.cancreatelightninginvoiceinternalnode",
+
+		StoreCanmodifystoresettings:    "btcpay.store.canmodifystoresettings",
+		StoreWebhooksCanmodifywebhooks: "btcpay.store.webhooks.canmodifywebhooks",
+		StoreCanviewstoresettings:      "btcpay.store.canviewstoresettings",
+		StoreCancreateinvoice:          "btcpay.store.cancreateinvoice",
+		StoreCanviewinvoices:           "btcpay.store.canviewinvoices",
+		StoreCanmodifypaymentrequests:  "btcpay.store.canmodifypaymentrequests",
+		StoreCanviewpaymentrequests:    "btcpay.store.canviewpaymentrequests",
+		StoreCanuselightningnode:       "btcpay.store.canuselightningnode",
+		StoreCancreatelightninginvoice: "btcpay.store.cancreatelightninginvoice",
+	}
+}
+
+func CreateCustomPermission(permission BTCPayPermission, storeID StoreID) BTCPayPermission {
+	return BTCPayPermission(fmt.Sprintf("%s:%s", permission, storeID))
 }

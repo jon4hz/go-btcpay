@@ -8,13 +8,9 @@ import (
 	"net/http"
 )
 
-func (c *Client) RevokeAPIKey(apiKey APIKey, ctx context.Context) (int, error) {
-	endpoint := fmt.Sprintf("%s/api/v1/api-keys/%s", c.URL, apiKey)
-	dataReq, err := json.Marshal(apiKey)
-	if err != nil {
-		return 0, err
-	}
-	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, bytes.NewBuffer(dataReq))
+func (c *Client) RevokeAPIKey(apiKey *APIKey, ctx context.Context) (int, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/api-keys/%s", c.URL, *apiKey)
+	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {
 		return 0, err
 	}

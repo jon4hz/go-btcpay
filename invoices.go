@@ -10,16 +10,6 @@ import (
 	"net/http"
 )
 
-type InvoiceInterface interface {
-	GetInvoices()
-	CreateInvoice()
-	GetInvoice()
-	ArchiveInvoice()
-	UpdateInvoice()
-	MarkInvoiceStatus()
-	UnarchiveInvoice()
-}
-
 type InvoiceID string
 
 type Invoice struct {

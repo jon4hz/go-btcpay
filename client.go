@@ -15,21 +15,29 @@ type Client struct {
 	APIKey   APIKey
 	Username string
 	Password string
+	Store    *Store
+	Invoice  *Invoice
 }
 
 func NewClient(url string, apiKey APIKey) *Client {
-	return &Client{
+	client := &Client{
 		URL:    url,
 		APIKey: apiKey,
 	}
+	client.Store = &Store{Client: client}
+	client.Invoice = &Invoice{Client: client}
+	return client
 }
 
 func NewBasicClient(url, username, password string) *Client {
-	return &Client{
+	client := &Client{
 		URL:      url,
 		Username: username,
 		Password: password,
 	}
+	client.Store = &Store{Client: client}
+	client.Invoice = &Invoice{Client: client}
+	return client
 }
 
 func (c *Client) doRequest(req *http.Request) ([]byte, int, error) {

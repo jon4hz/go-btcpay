@@ -9,38 +9,52 @@ import (
 
 type StoreID string
 
-type NetworkFeeMode string
+type Store struct {
+	ID     StoreID
+	Client *Client
+}
 
-const (
-	MultiplePaymentsOnly NetworkFeeMode = "MultiplePaymentsOnly"
-	Always               NetworkFeeMode = "Always"
-	Never                NetworkFeeMode = "Never"
-)
+// Enums NetworkFeeMode
+type BTCPayNetworkFeeMode string
+
+type NetworkFeeMode struct {
+	MultiplePaymentsOnly BTCPayNetworkFeeMode
+	Always               BTCPayNetworkFeeMode
+	Never                BTCPayNetworkFeeMode
+}
+
+func GetNetworkFeeMode() *NetworkFeeMode {
+	return &NetworkFeeMode{
+		MultiplePaymentsOnly: "MultiplePaymentsOnly",
+		Always:               "Always",
+		Never:                "Never",
+	}
+}
 
 type StoreResponse struct {
-	Name                         string         `json:"name"`
-	Website                      string         `json:"website"`
-	InvoiceExpiration            int64          `json:"invoiceExpiration"`
-	MonitoringExpiration         int64          `json:"monitoringExpiration"`
-	SpeedPolicy                  SpeedPolicy    `json:"speedPolicy"`
-	LightningDescriptionTemplate string         `json:"lightningDescriptionTemplate,omitempty"`
-	PaymentTolerance             float64        `json:"paymentTolerance"`
-	AnyoneCanCreateInvoice       bool           `json:"anyoneCanCreateInvoice"`
-	RequiresRefundEmail          bool           `json:"requiresRefundEmail"`
-	LightningAmountInSatoshi     bool           `json:"lightningAmountInSatoshi"`
-	LightningPrivateRouteHints   bool           `json:"lightningPrivateRouteHints"`
-	OnChainWithLnInvoiceFallback bool           `json:"onChainWithLnInvoiceFallback"`
-	RedirectAutomatically        bool           `json:"redirectAutomatically"`
-	ShowRecommendedFee           bool           `json:"showRecommendedFee"`
-	RecommendedFeeBlockTarget    int32          `json:"recommendedFeeBlockTarget"`
-	DefaultLang                  string         `json:"defaultLang"`
-	CustomLogo                   string         `json:"customLogo,omitempty"`
-	CustomCSS                    string         `json:"customCSS,omitempty"`
-	HtmlTitle                    string         `json:"htmlTitle,omitempty"`
-	NetworkFeeMode               NetworkFeeMode `json:"networkFeeMode"`
-	PayJoinEnabled               bool           `json:"payJoinEnabled"`
-	DefaultPaymentMethod         string         `json:"defaultPaymentMethod"`
-	ID                           StoreID        `json:"id"`
+	Name                         string               `json:"name"`
+	Website                      string               `json:"website"`
+	InvoiceExpiration            int64                `json:"invoiceExpiration"`
+	MonitoringExpiration         int64                `json:"monitoringExpiration"`
+	SpeedPolicy                  BTCPaySpeedPolicy    `json:"speedPolicy"`
+	LightningDescriptionTemplate string               `json:"lightningDescriptionTemplate,omitempty"`
+	PaymentTolerance             float64              `json:"paymentTolerance"`
+	AnyoneCanCreateInvoice       bool                 `json:"anyoneCanCreateInvoice"`
+	RequiresRefundEmail          bool                 `json:"requiresRefundEmail"`
+	LightningAmountInSatoshi     bool                 `json:"lightningAmountInSatoshi"`
+	LightningPrivateRouteHints   bool                 `json:"lightningPrivateRouteHints"`
+	OnChainWithLnInvoiceFallback bool                 `json:"onChainWithLnInvoiceFallback"`
+	RedirectAutomatically        bool                 `json:"redirectAutomatically"`
+	ShowRecommendedFee           bool                 `json:"showRecommendedFee"`
+	RecommendedFeeBlockTarget    int32                `json:"recommendedFeeBlockTarget"`
+	DefaultLang                  string               `json:"defaultLang"`
+	CustomLogo                   string               `json:"customLogo,omitempty"`
+	CustomCSS                    string               `json:"customCSS,omitempty"`
+	HtmlTitle                    string               `json:"htmlTitle,omitempty"`
+	NetworkFeeMode               BTCPayNetworkFeeMode `json:"networkFeeMode"`
+	PayJoinEnabled               bool                 `json:"payJoinEnabled"`
+	DefaultPaymentMethod         string               `json:"defaultPaymentMethod"`
+	ID                           StoreID              `json:"id"`
 }
 
 func (c *Client) GetStores(ctx context.Context) ([]*StoreResponse, int, error) {

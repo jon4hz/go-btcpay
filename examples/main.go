@@ -15,7 +15,6 @@ import (
 var ctx = context.Background()
 
 func main() {
-	ctx := context.Background()
 	config, err := config.ReadConf("config/config.yml")
 	if err != nil {
 		log.Fatal(err)
@@ -30,10 +29,16 @@ func main() {
 		panic(err)
 	}
 	storeID := getStoreID(stores)
+	createInvoiceByStoreGetAndDeleteInvoiceByID(client, storeID)
 
 	//getInvoicesByStore(client, storeID)
-	//createAndDeleteInvoice(client, storeID)
-	createInvoiceByStoreGetAndDeleteInvoiceByID(client, storeID)
+	//reateAndDeleteInvoice(client, storeID)
+
+	createNewStore(client)
+}
+
+func createNewStore(c *btcpay.Client) {
+	fmt.Println(c.CreateStore(&btcpay.StoreRequest{Name: "test03"}, ctx))
 }
 
 func createInvoiceByStoreGetAndDeleteInvoiceByID(client *btcpay.Client, storeID btcpay.StoreID) {

@@ -32,7 +32,7 @@ func NewBasicClient(url, username, password string) *Client {
 	}
 }
 
-func (c *Client) doRequest(req *http.Request) ([]byte, error) {
+func (c *Client) doRequest(req *http.Request) ([]byte, int, error) {
 	if len(c.APIKey) > 0 {
 		req.Header.Set("Authorization", fmt.Sprintf("token %s", c.APIKey))
 	} else if len(c.Username) > 0 && len(c.Password) > 0 {
@@ -42,18 +42,18 @@ func (c *Client) doRequest(req *http.Request) ([]byte, error) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
 	switch resp.StatusCode {
 	case 200:
-		return body, nil
+		return body, resp.StatusCode, nil
 	default:
-		return nil, fmt.Errorf("%s", body)
+		return nil, resp.StatusCode, fmt.Errorf("%s", body)
 	}
 }

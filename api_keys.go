@@ -8,22 +8,22 @@ import (
 	"net/http"
 )
 
-func (c *Client) RevokeAPIKey(apiKey APIKey, ctx context.Context) error {
+func (c *Client) RevokeAPIKey(apiKey APIKey, ctx context.Context) (int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys/%s", c.URL, apiKey)
 	dataReq, err := json.Marshal(apiKey)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, bytes.NewBuffer(dataReq))
 	if err != nil {
-		return err
+		return 0, err
 	}
-	_, err = c.doRequest(req)
+	_, statusCode, err := c.doRequest(req)
 	if err != nil {
-		return err
+		return statusCode, err
 	}
 
-	return nil
+	return statusCode, nil
 }
 
 type APIKeyResponse struct {
@@ -32,40 +32,40 @@ type APIKeyResponse struct {
 	Permissions []Permission `json:"permissions"`
 }
 
-func (c *Client) GetCurrentAPIKey(ctx context.Context) (*APIKeyResponse, error) {
+func (c *Client) GetCurrentAPIKey(ctx context.Context) (*APIKeyResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys/current", c.URL)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	bytes, err := c.doRequest(req)
+	bytes, statusCode, err := c.doRequest(req)
 	if err != nil {
-		return nil, err
+		return nil, statusCode, err
 	}
 	var dataRes APIKeyResponse
 	err = json.Unmarshal(bytes, &dataRes)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	return &dataRes, nil
+	return &dataRes, statusCode, nil
 }
 
-func (c *Client) RevokeCurrentAPIKey(ctx context.Context) (*APIKeyResponse, error) {
+func (c *Client) RevokeCurrentAPIKey(ctx context.Context) (*APIKeyResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys/current", c.URL)
 	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	bytes, err := c.doRequest(req)
+	bytes, statusCode, err := c.doRequest(req)
 	if err != nil {
-		return nil, err
+		return nil, statusCode, err
 	}
 	var data APIKeyResponse
 	err = json.Unmarshal(bytes, &data)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	return &data, nil
+	return &data, statusCode, nil
 }
 
 type CreateAPIKeyRequest struct {
@@ -73,24 +73,24 @@ type CreateAPIKeyRequest struct {
 	Permissions []Permission `json:"permissions,omitempty"`
 }
 
-func (c *Client) CreateAPIKey(apiKeyRequest *CreateAPIKeyRequest, ctx context.Context) (*APIKeyResponse, error) {
+func (c *Client) CreateAPIKey(apiKeyRequest *CreateAPIKeyRequest, ctx context.Context) (*APIKeyResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys", c.URL)
 	dataReq, err := json.Marshal(apiKeyRequest)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, bytes.NewBuffer(dataReq))
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	bytes, err := c.doRequest(req)
+	bytes, statusCode, err := c.doRequest(req)
 	if err != nil {
-		return nil, err
+		return nil, statusCode, err
 	}
 	var dataRes APIKeyResponse
 	err = json.Unmarshal(bytes, &dataRes)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	return &dataRes, nil
+	return &dataRes, statusCode, nil
 }

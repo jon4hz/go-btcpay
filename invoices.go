@@ -9,12 +9,14 @@ import (
 	"net/http"
 )
 
+type InvoiceID string
+
 type InvoicesResponse struct {
 	Amount           string          `json:"amount,omitempty"`
 	Currency         string          `json:"currency,omitempty"`
 	Metadata         InvoiceMetadata `json:"metadata,omitempty"`
 	Checkout         InvoiceCheckout `json:"checkout,omitempty"`
-	ID               string          `json:"id"`
+	ID               InvoiceID       `json:"id"`
 	CheckoutLink     string          `json:"checkoutLink"`
 	CreatedTime      int64           `json:"createdTime"`
 	ExpirationTime   int64           `json:"expirationTime"`
@@ -46,24 +48,30 @@ type InvoiceCheckout struct {
 	DefaultLanguage   string      `json:"defaultLanguage,omitempty"`
 }
 
-type GetInvoicesRequest struct {
-	StoreID string `json:"storeId"`
-}
+type StoreID string
 
-func (c *Client) GetInvoices(invoiceReq *GetInvoicesRequest, ctx context.Context) (*[]InvoicesResponse, error) {
-	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", c.URL, invoiceReq)
+func (c *Client) GetInvoices(storeID StoreID, ctx context.Context) (*[]InvoicesResponse, int, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", c.URL, storeID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	bytes, err := c.doRequest(req)
+	bytes, statusCode, err := c.doRequest(req)
 	if err != nil {
-		return nil, err
+		return nil, statusCode, err
 	}
 	var data []InvoicesResponse
 	err = json.Unmarshal(bytes, &data)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	return &data, nil
+
+	return &data, statusCode, nil
+}
+
+type CreateInvoiceRequest struct {
+	Amount          string          `json:"amount"`
+	Currency        string          `json:"currency,omitempty"`
+	Metadata        InvoiceMetadata `json:"metadata,omitempty"`
+	InvoiceCheckout InvoiceCheckout `json:"checkout,omitempty"`
 }

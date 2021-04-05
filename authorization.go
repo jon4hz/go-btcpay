@@ -19,19 +19,19 @@ type AuthorizationRequest struct {
 	ApplicationIdentifier string       `json:"applicationIdentifier,omitempty"`
 }
 
-func (c *Client) Authorize(authRequest *AuthorizationRequest, ctx context.Context) error {
+func (c *Client) Authorize(authRequest *AuthorizationRequest, ctx context.Context) (int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/authorize", c.URL)
 	dataReq, err := json.Marshal(authRequest)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, bytes.NewBuffer(dataReq))
 	if err != nil {
-		return err
+		return 0, err
 	}
-	_, err = c.doRequest(req)
+	_, statusCode, err := c.doRequest(req)
 	if err != nil {
-		return err
+		return statusCode, err
 	}
-	return nil
+	return statusCode, nil
 }

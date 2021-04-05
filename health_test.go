@@ -14,7 +14,7 @@ func TestValidHealthReponseWithBasicClient(t *testing.T) {
 		t.Error("Error while reading the config")
 	}
 	client := NewBasicClient(config.BTCPay.URL, config.BTCPay.Username, config.BTCPay.Password)
-	_, err = client.GetHealth(context.Background())
+	_, _, err = client.GetHealth(context.Background())
 	if err != nil {
 		t.Error("Error while getting the health status: ", err)
 	}
@@ -23,7 +23,7 @@ func TestValidHealthReponseWithBasicClient(t *testing.T) {
 
 func TestInvalidHealthReponse(t *testing.T) {
 	client := NewClient("https://docs.btcpayserver.com", "")
-	req, err := client.GetHealth(context.Background())
+	req, _, err := client.GetHealth(context.Background())
 	if err == nil {
 		t.Error("Should have thrown an error because URL is invalid: expected nil, got ", req)
 	}
@@ -32,7 +32,7 @@ func TestInvalidHealthReponse(t *testing.T) {
 
 func TestInvalidContextRequestHealthReponse(t *testing.T) {
 	client := NewClient("", "")
-	req, err := client.GetHealth(nil)
+	req, _, err := client.GetHealth(nil)
 	if err == nil {
 		t.Error("Should have thrown an error because context is nil: expected error, got ", req)
 	}

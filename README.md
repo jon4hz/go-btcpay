@@ -33,7 +33,7 @@ func main() {
     // Print informations about the server, etc
     fmt.Println(client.GetServerInfo(ctx))
 
-    // Does the same but with a APIKey instead of basicAuth
+    // Does the same but with an APIKey instead of basicAuth
     // Create a client with an APIKey
     client2 := btcpay.CreateBasicClient("https://mybtcpayserver.com", btcpay.APIKey("myAPIKey")
 

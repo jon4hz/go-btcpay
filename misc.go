@@ -12,6 +12,7 @@ type LanguageCodesRespose struct {
 	CurrentLanguage string `json:"currentLanguage"`
 }
 
+// Bug?
 func (c *Client) GetLanguageCodes(ctx context.Context) ([]*LanguageCodesRespose, int, error) {
 	endpoint := fmt.Sprintf("%s/misc/lang", c.URL)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
@@ -22,7 +23,6 @@ func (c *Client) GetLanguageCodes(ctx context.Context) ([]*LanguageCodesRespose,
 	if err != nil {
 		return nil, statusCode, err
 	}
-	fmt.Println(string(bytes))
 	var dataRes []*LanguageCodesRespose
 	err = json.Unmarshal(bytes, &dataRes)
 	if err != nil {

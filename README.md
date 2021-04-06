@@ -63,6 +63,27 @@ if err != nil {
 ```
 
 
+Calling the method `CreateInvoice()` works for variable of type *btcpay.Store, too.
+```go
+// by passing the store from the previously created client, the new store (*btcpay.Store) contains a pointer 
+// back to the inital client 
+store = client.Store
+// assign a storeID to the store
+store.ID = btcpay.StoreID("YourStoreID")
+
+// create the invoice
+invoice, _, err := store.CreateInvoice(context.TODO(), &btcpay.InvoiceRequest{
+    Amount:   "10",
+    Currency: "USD",
+})
+if err != nil {
+   fmt.Println(err)
+} else {
+    fmt.Println(invoice) // invoice has type *btcpay.InvoiceResponse
+}
+```
+
+
 _[more examples will follow soon]_
 
 
@@ -80,6 +101,9 @@ Endpoint                                     |              Status
 |`/api/v1/stores`                            | ✅ fully implemented
 |`/api/v1/stores/{storeId}/invoices`         | ✅ fully implemented
 |`/api/v1/stores/{storeId}/payment-requests` | ✅ fully implemented
+|`/misc/lang`                                | ❌ Not working, [issue](https://github.com/btcpayserver/btcpayserver/issues/2437)
+|`/i/`                                       | ✅ fully implemented
+|`/api/v1/users/me/notifications/`           | ⏳ Work in progress
 
 
 ## 📜 Licensing

@@ -29,12 +29,3 @@ func TestInvalidHealthReponse(t *testing.T) {
 	}
 
 }
-
-func TestInvalidContextRequestHealthReponse(t *testing.T) {
-	client := NewClient("", "")
-	req, _, err := client.GetHealth(nil)
-	if err == nil {
-		t.Error("Should have thrown an error because context is nil: expected error, got ", req)
-	}
-
-}

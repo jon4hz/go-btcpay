@@ -1,7 +1,5 @@
 package btcpay
 
-// WIP
-
 import (
 	"bytes"
 	"context"

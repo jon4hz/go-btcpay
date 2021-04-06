@@ -6,11 +6,11 @@ _-- Work in progress --_
 A Golang SDK for the BTCPay Server [Greenfield API v1](https://docs.btcpayserver.org/API/Greenfield/v1/).
 
 ## 💡 About
-This package provies full access to the Greenfield API v1 from a BTCPayServer. Every API call returns a corresponding go struct.
+This package provies full access to the Greenfield API v1 from a BTCPayServer. Every API call returns, if available, a corresponding go struct, a HTTP status code and an error.
 
 It's possible to control the individual calls by passing a context for each function and method.
 
-## 🚀 Getting Started
+## 🚀 Getting started
 
 ### 🧑‍💻 Create a client
 
@@ -43,6 +43,25 @@ func main() {
     fmt.Println(client2.GetServerInfo(ctx))
 }
 ```
+
+### 📝 Create an invoice
+You can create an invoice by using the previously created client.
+```go
+// assign a store to the client
+client.Store.ID = btcpay.StoreID("YourStoreID")
+
+// create the invoice
+invoice, _, err := client.CreateInvoice(context.TODO(), &client.Store.ID, &btcpay.InvoiceRequest{
+    Amount:   "10",
+    Currency: "USD",
+})
+if err != nil {
+   fmt.Println(err)
+} else {
+    fmt.Println(invoice) // invoice has type *btcpay.InvoiceResponse
+}
+```
+
 
 _[more examples will follow soon]_
 

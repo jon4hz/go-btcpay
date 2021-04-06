@@ -102,8 +102,8 @@ Endpoint                                     |              Status
 |`/api/v1/stores/{storeId}/invoices`         | ✅ fully implemented
 |`/api/v1/stores/{storeId}/payment-requests` | ✅ fully implemented
 |`/misc/lang`                                | ❌ Not working, [issue](https://github.com/btcpayserver/btcpayserver/issues/2437)
-|`/i/`                                       | ✅ fully implemented
-|`/api/v1/users/me/notifications/`           | ⏳ Work in progress
+|`/i`                                        | ✅ fully implemented
+|`/api/v1/users/me/notifications`            | ⏳ Work in progress
 
 
 ## 📜 Licensing

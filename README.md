@@ -1,4 +1,5 @@
 # Go-BTCPay
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/jon4hz/go-btcpay/blob/master/LICENSE) 
 [![testing](https://github.com/jon4hz/go-btcpay/actions/workflows/testing.yml/badge.svg)](https://github.com/jon4hz/go-btcpay/actions/workflows/testing.yml)
 
 _-- Work in progress --_
@@ -86,10 +87,7 @@ if err != nil {
 
 _[more examples will follow soon]_
 
-
-## 🌗 Status
-
-The following table gives an overview of the implemented endpoints.
+initialented endpoints.
 
 Endpoint                                     |              Status
 |:-------------------------------------------|:-------------------|

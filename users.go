@@ -38,13 +38,13 @@ func (c *Client) GetUser(ctx context.Context) (*UserResponse, int, error) {
 	return &dataRes, statusCode, nil
 }
 
-type CreateUserRequest struct {
+type UserRequest struct {
 	Email           string `json:"email"`
 	Password        string `json:"password"`
 	IsAdministrator bool   `json:"isAdministrator"`
 }
 
-func (c *Client) CreateUser(userRequest *CreateUserRequest, ctx context.Context) (*UserResponse, int, error) {
+func (c *Client) CreateUser(userRequest *UserRequest, ctx context.Context) (*UserResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/users", c.URL)
 	dataReq, err := json.Marshal(userRequest)
 	if err != nil {

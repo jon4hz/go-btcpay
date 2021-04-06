@@ -64,12 +64,12 @@ func (c *Client) RevokeCurrentAPIKey(ctx context.Context) (*APIKeyResponse, int,
 	return &data, statusCode, nil
 }
 
-type CreateAPIKeyRequest struct {
+type APIKeyRequest struct {
 	Label       string             `json:"label,omitempty"`
 	Permissions []BTCPayPermission `json:"permissions,omitempty"`
 }
 
-func (c *Client) CreateAPIKey(apiKeyRequest *CreateAPIKeyRequest, ctx context.Context) (*APIKeyResponse, int, error) {
+func (c *Client) CreateAPIKey(apiKeyRequest *APIKeyRequest, ctx context.Context) (*APIKeyResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys", c.URL)
 	dataReq, err := json.Marshal(apiKeyRequest)
 	if err != nil {

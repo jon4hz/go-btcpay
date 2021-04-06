@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -38,7 +39,8 @@ func main() {
 
 	//createNewUser(client)
 	//fmt.Println(client.GetUser(ctx))
-	fmt.Println((&btcpay.Client{URL: client.URL}).GetLanguageCodes(ctx))
+
+	/* fmt.Println((&btcpay.Client{URL: client.URL}).GetLanguageCodes(ctx))
 
 	langs, _, err := client.GetLanguageCodes(ctx)
 	if err != nil {
@@ -46,11 +48,38 @@ func main() {
 	}
 	for _, v := range langs {
 		fmt.Println(v)
+	} */
+
+	//createPrintPageDeleteInvoice(client, &storeID)
+	testStruct()
+	getPaymentRequests(client, &storeID)
+}
+
+func getPaymentRequests(c *btcpay.Client, storeID *btcpay.StoreID) {
+	paymentRequests, _, err := c.GetPaymentRequests(storeID, ctx)
+	if err != nil {
+		panic(err)
 	}
+	for _, v := range paymentRequests {
+		fmt.Println(v)
+	}
+
+}
+
+func createPrintPageDeleteInvoice(c *btcpay.Client, storeID *btcpay.StoreID) {
+	invoice, _, _ := c.CreateInvoice(storeID, &btcpay.InvoiceRequest{
+		Amount:   "10",
+		Currency: "USD",
+	}, ctx)
+	page, _, _ := c.GetInvoiceCheckoutPage(&invoice.ID, ctx)
+	fmt.Println(string(page.Page))
+	invoiceC := c.Invoice
+	invoiceC.ID = invoice.ID
+	fmt.Println(invoiceC.ArchiveInvoice(ctx))
 }
 
 func createNewUser(c *btcpay.Client) {
-	fmt.Println(c.CreateUser(&btcpay.CreateUserRequest{
+	fmt.Println(c.CreateUser(&btcpay.UserRequest{
 		Email:           "test@test.com",
 		Password:        "asdfasdf",
 		IsAdministrator: false,
@@ -112,7 +141,7 @@ func createAndDeleteInvoice(client *btcpay.Client, storeID btcpay.StoreID) {
 
 func createAndDeleteAPIKey(client *btcpay.Client) {
 	// create new APIKey
-	apiKey, _, err := client.CreateAPIKey(&btcpay.CreateAPIKeyRequest{
+	apiKey, _, err := client.CreateAPIKey(&btcpay.APIKeyRequest{
 		Permissions: []btcpay.BTCPayPermission{btcpay.CreateCustomPermission(btcpay.GetPermission().StoreCanviewinvoices, btcpay.StoreID("66tU3WhCAcsbocA3EmUXHE96XsoVQjWMUiTp3s6LLYAn"))}}, ctx)
 	if err != nil {
 		panic(err)
@@ -127,7 +156,7 @@ func createAndDeleteAPIKey(client *btcpay.Client) {
 
 func createAndDeleteCurrentAPIKey(client *btcpay.Client) {
 	// create new APIKey
-	apiKey, _, err := client.CreateAPIKey(&btcpay.CreateAPIKeyRequest{
+	apiKey, _, err := client.CreateAPIKey(&btcpay.APIKeyRequest{
 		Permissions: []btcpay.BTCPayPermission{btcpay.CreateCustomPermission(btcpay.GetPermission().StoreCanviewinvoices, btcpay.StoreID("66tU3WhCAcsbocA3EmUXHE96XsoVQjWMUiTp3s6LLYAn"))}}, ctx)
 	if err != nil {
 		panic(err)
@@ -138,4 +167,24 @@ func createAndDeleteCurrentAPIKey(client *btcpay.Client) {
 	fmt.Println(client.GetCurrentAPIKey(ctx))
 	time.Sleep(10 * time.Second)
 	client.RevokeCurrentAPIKey(ctx)
+}
+
+func testStruct() {
+	type testStruct2 struct {
+		Data  int  `json:"data"`
+		Valid bool `json:"valid"`
+	}
+
+	type testStruct struct {
+		X []testStruct2
+	}
+
+	data := `{"x1": {"data": 1, "valid": true}, "x2":{"data": 2, "valid": false}}`
+
+	var test testStruct
+	err := json.Unmarshal([]byte(data), &test)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(test.X)
 }

@@ -28,7 +28,6 @@ func (c *Client) GetLanguageCodes(ctx context.Context) ([]*LanguageCodesRespose,
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return dataRes, statusCode, nil
 }
 
@@ -51,7 +50,6 @@ func (c *Client) GetInvoiceCheckoutPage(invoiceID *InvoiceID, ctx context.Contex
 	func(bytes []byte, dataRes *InvoiceCheckoutPage) {
 		dataRes.Page = bytes
 	}(bytes, &dataRes)
-
 	return &dataRes, statusCode, nil
 }
 
@@ -69,6 +67,5 @@ func (i *Invoice) GetInvoiceCheckoutPage(ctx context.Context) (*InvoiceCheckoutP
 	func(bytes []byte, dataRes *InvoiceCheckoutPage) {
 		dataRes.Page = bytes
 	}(bytes, &dataRes)
-
 	return &dataRes, statusCode, nil
 }

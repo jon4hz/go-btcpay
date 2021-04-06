@@ -11,12 +11,13 @@ import (
 type APIKey string
 
 type Client struct {
-	URL      string
-	APIKey   APIKey
-	Username string
-	Password string
-	Store    *Store
-	Invoice  *Invoice
+	URL            string
+	APIKey         APIKey
+	Username       string
+	Password       string
+	Store          *Store
+	Invoice        *Invoice
+	PaymentRequest *PaymentRequest
 }
 
 func NewClient(url string, apiKey APIKey) *Client {
@@ -25,7 +26,8 @@ func NewClient(url string, apiKey APIKey) *Client {
 		APIKey: apiKey,
 	}
 	client.Store = &Store{Client: client}
-	client.Invoice = &Invoice{Client: client}
+	client.Invoice = &Invoice{Client: client, Store: client.Store}
+	client.PaymentRequest = &PaymentRequest{Client: client, Store: client.Store}
 	return client
 }
 
@@ -36,7 +38,8 @@ func NewBasicClient(url, username, password string) *Client {
 		Password: password,
 	}
 	client.Store = &Store{Client: client}
-	client.Invoice = &Invoice{Client: client}
+	client.Invoice = &Invoice{Client: client, Store: client.Store}
+	client.PaymentRequest = &PaymentRequest{Client: client, Store: client.Store}
 	return client
 }
 

@@ -139,7 +139,6 @@ func (c *Client) GetInvoices(storeID *StoreID, ctx context.Context) ([]*InvoiceR
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return dataRes, statusCode, nil
 }
 
@@ -158,7 +157,6 @@ func (s *Store) GetInvoices(ctx context.Context) ([]*InvoiceResponse, int, error
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return dataRes, statusCode, nil
 }
 
@@ -189,7 +187,6 @@ func (c *Client) CreateInvoice(storeID *StoreID, invoiceRequest *InvoiceRequest,
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -212,7 +209,6 @@ func (s *Store) CreateInvoice(invoiceRequest *InvoiceRequest, ctx context.Contex
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -232,7 +228,6 @@ func (c *Client) GetInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx context.
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -251,7 +246,6 @@ func (s *Store) GetInvoice(invoiceID *InvoiceID, ctx context.Context) (*InvoiceR
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -270,7 +264,6 @@ func (i *Invoice) GetInvoice(ctx context.Context) (*InvoiceResponse, int, error)
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -285,7 +278,6 @@ func (c *Client) ArchiveInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx cont
 	if err != nil {
 		return statusCode, err
 	}
-
 	return statusCode, nil
 }
 
@@ -299,7 +291,6 @@ func (s *Store) ArchiveInvoice(invoiceID *InvoiceID, ctx context.Context) (int, 
 	if err != nil {
 		return statusCode, err
 	}
-
 	return statusCode, nil
 }
 
@@ -313,7 +304,6 @@ func (i *Invoice) ArchiveInvoice(ctx context.Context) (int, error) {
 	if err != nil {
 		return statusCode, err
 	}
-
 	return statusCode, nil
 }
 
@@ -341,7 +331,6 @@ func (c *Client) UpdateInvoice(storeID *StoreID, invoiceID *InvoiceID, invoiceUp
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -364,7 +353,6 @@ func (s *Store) UpdateInvoice(invoiceID *InvoiceID, invoiceUpdate *InvoiceUpdate
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -387,7 +375,6 @@ func (i *Invoice) UpdateInvoice(invoiceUpdate *InvoiceUpdate, ctx context.Contex
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -415,7 +402,6 @@ func (c *Client) MarkInvoiceStatus(storeID *StoreID, invoiceID *InvoiceID, markI
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -438,7 +424,6 @@ func (s *Store) MarkInvoiceStatus(invoiceID *InvoiceID, markInvoiceStatusRequest
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -461,7 +446,6 @@ func (i *Invoice) MarkInvoiceStatus(markInvoiceStatusRequest *MarkInvoiceStatusR
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -481,7 +465,6 @@ func (c *Client) UnarchiveInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx co
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -500,7 +483,6 @@ func (s *Store) UnarchiveInvoice(invoiceID *InvoiceID, ctx context.Context) (*In
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -519,6 +501,5 @@ func (i *Invoice) UnarchiveInvoice(ctx context.Context) (*InvoiceResponse, int, 
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }

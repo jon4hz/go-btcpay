@@ -123,7 +123,6 @@ func (c *Client) CreateStore(storeRequest *StoreRequest, ctx context.Context) (*
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -143,7 +142,6 @@ func (c *Client) GetStore(storeID *StoreID, ctx context.Context) (*StoreResponse
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -162,7 +160,6 @@ func (s *Store) GetStore(ctx context.Context) (*StoreResponse, int, error) {
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -211,7 +208,6 @@ func (c *Client) UpdateStore(storeID *StoreID, storeUpdate *StoreUpdate, ctx con
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 
@@ -234,7 +230,6 @@ func (s *Store) UpdateStore(storeUpdate *StoreUpdate, ctx context.Context) (*Sto
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return &dataRes, statusCode, nil
 }
 

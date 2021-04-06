@@ -18,7 +18,6 @@ func (c *Client) RevokeAPIKey(apiKey *APIKey, ctx context.Context) (int, error) 
 	if err != nil {
 		return statusCode, err
 	}
-
 	return statusCode, nil
 }
 

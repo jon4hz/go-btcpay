@@ -19,7 +19,7 @@ type AuthorizationRequest struct {
 	ApplicationIdentifier string             `json:"applicationIdentifier,omitempty"`
 }
 
-func (c *Client) Authorize(authRequest *AuthorizationRequest, ctx context.Context) (int, error) {
+func (c *Client) Authorize(ctx context.Context, authRequest *AuthorizationRequest) (int, error) {
 	endpoint := fmt.Sprintf("%s/api-keys/authorize", c.URL)
 	dataReq, err := json.Marshal(authRequest)
 	if err != nil {

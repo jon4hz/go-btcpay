@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func (c *Client) RevokeAPIKey(apiKey *APIKey, ctx context.Context) (int, error) {
+func (c *Client) RevokeAPIKey(ctx context.Context, apiKey *APIKey) (int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys/%s", c.URL, *apiKey)
 	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {
@@ -68,7 +68,7 @@ type APIKeyRequest struct {
 	Permissions []BTCPayPermission `json:"permissions,omitempty"`
 }
 
-func (c *Client) CreateAPIKey(apiKeyRequest *APIKeyRequest, ctx context.Context) (*APIKeyResponse, int, error) {
+func (c *Client) CreateAPIKey(ctx context.Context, apiKeyRequest *APIKeyRequest) (*APIKeyResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/api-keys", c.URL)
 	dataReq, err := json.Marshal(apiKeyRequest)
 	if err != nil {

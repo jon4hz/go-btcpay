@@ -44,7 +44,7 @@ type UserRequest struct {
 	IsAdministrator bool   `json:"isAdministrator"`
 }
 
-func (c *Client) CreateUser(userRequest *UserRequest, ctx context.Context) (*UserResponse, int, error) {
+func (c *Client) CreateUser(ctx context.Context, userRequest *UserRequest) (*UserResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/users", c.URL)
 	dataReq, err := json.Marshal(userRequest)
 	if err != nil {

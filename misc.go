@@ -36,7 +36,7 @@ type InvoiceCheckoutPage struct {
 }
 
 // View the checkout page of an invoice
-func (c *Client) GetInvoiceCheckoutPage(invoiceID *InvoiceID, ctx context.Context) (*InvoiceCheckoutPage, int, error) {
+func (c *Client) GetInvoiceCheckoutPage(ctx context.Context, invoiceID *InvoiceID) (*InvoiceCheckoutPage, int, error) {
 	endpoint := fmt.Sprintf("%s/i/%s", c.URL, *invoiceID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {

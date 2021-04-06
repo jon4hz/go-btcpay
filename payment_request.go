@@ -54,7 +54,7 @@ type PaymentRequestResponse struct {
 }
 
 // View information about the existing payment requests
-func (c *Client) GetPaymentRequests(storeID *StoreID, ctx context.Context) ([]*PaymentRequestResponse, int, error) {
+func (c *Client) GetPaymentRequests(ctx context.Context, storeID *StoreID) ([]*PaymentRequestResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests", c.URL, *storeID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func (s *Store) GetPaymentRequests(ctx context.Context) ([]*PaymentRequestRespon
 }
 
 // Create a new payment request
-func (c *Client) CreatePaymentRequest(storeID *StoreID, paymentRequestRequest *PaymentRequestRequest, ctx context.Context) (*PaymentRequestResponse, int, error) {
+func (c *Client) CreatePaymentRequest(ctx context.Context, storeID *StoreID, paymentRequestRequest *PaymentRequestRequest) (*PaymentRequestResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests", c.URL, *storeID)
 	dataReq, err := json.Marshal(paymentRequestRequest)
 	if err != nil {
@@ -113,7 +113,7 @@ func (c *Client) CreatePaymentRequest(storeID *StoreID, paymentRequestRequest *P
 	return dataRes, statusCode, nil
 }
 
-func (s *Store) CreatePaymentRequest(paymentRequestRequest *PaymentRequestRequest, ctx context.Context) (*PaymentRequestResponse, int, error) {
+func (s *Store) CreatePaymentRequest(ctx context.Context, paymentRequestRequest *PaymentRequestRequest) (*PaymentRequestResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests", s.Client.URL, s.ID)
 	dataReq, err := json.Marshal(paymentRequestRequest)
 	if err != nil {
@@ -136,7 +136,7 @@ func (s *Store) CreatePaymentRequest(paymentRequestRequest *PaymentRequestReques
 }
 
 // View information about the specified payment request
-func (c *Client) GetPaymentRequest(storeID *StoreID, paymentRequestID *PaymentRequestID, ctx context.Context) (*PaymentRequestResponse, int, error) {
+func (c *Client) GetPaymentRequest(ctx context.Context, storeID *StoreID, paymentRequestID *PaymentRequestID) (*PaymentRequestResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests/%s", c.URL, *storeID, *paymentRequestID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func (c *Client) GetPaymentRequest(storeID *StoreID, paymentRequestID *PaymentRe
 	return &dataRes, statusCode, nil
 }
 
-func (s *Store) GetPaymentRequest(paymentRequestID *PaymentRequestID, ctx context.Context) (*PaymentRequestResponse, int, error) {
+func (s *Store) GetPaymentRequest(ctx context.Context, paymentRequestID *PaymentRequestID) (*PaymentRequestResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests/%s", s.Client.URL, s.ID, *paymentRequestID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func (p *PaymentRequest) GetPaymentRequest(ctx context.Context) (*PaymentRequest
 }
 
 // Archives the specified payment request.
-func (c *Client) ArchivePaymentRequest(storeID *StoreID, paymentRequestID *PaymentRequestID, ctx context.Context) (int, error) {
+func (c *Client) ArchivePaymentRequest(ctx context.Context, storeID *StoreID, paymentRequestID *PaymentRequestID) (int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests/%s", c.URL, *storeID, *paymentRequestID)
 	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func (c *Client) ArchivePaymentRequest(storeID *StoreID, paymentRequestID *Payme
 	return statusCode, nil
 }
 
-func (s *Store) ArchivePaymentRequest(paymentRequestID *PaymentRequestID, ctx context.Context) (int, error) {
+func (s *Store) ArchivePaymentRequest(ctx context.Context, paymentRequestID *PaymentRequestID) (int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests/%s", s.Client.URL, s.ID, *paymentRequestID)
 	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func (p *PaymentRequest) ArchivePaymentRequest(ctx context.Context) (int, error)
 }
 
 // Update a payment request
-func (c *Client) UpdatePaymentRequest(storeID *StoreID, paymentRequestID *PaymentRequestID, paymentRequestUpdate *PaymentRequestRequest, ctx context.Context) (*PaymentRequestResponse, int, error) {
+func (c *Client) UpdatePaymentRequest(ctx context.Context, storeID *StoreID, paymentRequestID *PaymentRequestID, paymentRequestUpdate *PaymentRequestRequest) (*PaymentRequestResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests/%s", c.URL, *storeID, *paymentRequestID)
 	dataReq, err := json.Marshal(paymentRequestUpdate)
 	if err != nil {
@@ -253,7 +253,7 @@ func (c *Client) UpdatePaymentRequest(storeID *StoreID, paymentRequestID *Paymen
 	return &dataRes, statusCode, nil
 }
 
-func (s *Store) UpdatePaymentRequest(paymentRequestID *PaymentRequestID, paymentRequestUpdate *PaymentRequestRequest, ctx context.Context) (*PaymentRequestResponse, int, error) {
+func (s *Store) UpdatePaymentRequest(ctx context.Context, paymentRequestID *PaymentRequestID, paymentRequestUpdate *PaymentRequestRequest) (*PaymentRequestResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests/%s", s.Client.URL, s.ID, *paymentRequestID)
 	dataReq, err := json.Marshal(paymentRequestUpdate)
 	if err != nil {
@@ -275,7 +275,7 @@ func (s *Store) UpdatePaymentRequest(paymentRequestID *PaymentRequestID, payment
 	return &dataRes, statusCode, nil
 }
 
-func (p *PaymentRequest) UpdatePaymentRequest(paymentRequestUpdate *PaymentRequestRequest, ctx context.Context) (*PaymentRequestResponse, int, error) {
+func (p *PaymentRequest) UpdatePaymentRequest(ctx context.Context, paymentRequestUpdate *PaymentRequestRequest) (*PaymentRequestResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payment-requests/%s", p.Client.URL, p.Store.ID, p.ID)
 	dataReq, err := json.Marshal(paymentRequestUpdate)
 	if err != nil {

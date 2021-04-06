@@ -1,4 +1,6 @@
 # Go-BTCPay
+[![testing](https://github.com/jon4hz/go-btcpay/actions/workflows/testing.yml/badge.svg)](https://github.com/jon4hz/go-btcpay/actions/workflows/testing.yml)
+
 _-- Work in progress --_
 
 A Golang SDK for the BTCPay Server [Greenfield API v1](https://docs.btcpayserver.org/API/Greenfield/v1/).
@@ -6,7 +8,7 @@ A Golang SDK for the BTCPay Server [Greenfield API v1](https://docs.btcpayserver
 ## 💡 About
 This package provies full access to the Greenfield API v1 from a BTCPayServer. Every API call returns a corresponding go struct.
 
-It's possible to controll the individual calls by passing a context for each function and method.
+It's possible to control the individual calls by passing a context for each function and method.
 
 ## 🚀 Getting Started
 

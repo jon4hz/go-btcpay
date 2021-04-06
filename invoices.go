@@ -122,7 +122,7 @@ type InvoiceCheckout struct {
 }
 
 // Get an array of all Invoices from a single store.
-func (c *Client) GetInvoices(storeID *StoreID, ctx context.Context) ([]*InvoiceResponse, int, error) {
+func (c *Client) GetInvoices(ctx context.Context, storeID *StoreID) ([]*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", c.URL, *storeID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
@@ -166,7 +166,7 @@ type InvoiceRequest struct {
 }
 
 // Create an invoice for a certain store
-func (c *Client) CreateInvoice(storeID *StoreID, invoiceRequest *InvoiceRequest, ctx context.Context) (*InvoiceResponse, int, error) {
+func (c *Client) CreateInvoice(ctx context.Context, storeID *StoreID, invoiceRequest *InvoiceRequest) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", c.URL, *storeID)
 	dataReq, err := json.Marshal(invoiceRequest)
 	if err != nil {
@@ -188,7 +188,7 @@ func (c *Client) CreateInvoice(storeID *StoreID, invoiceRequest *InvoiceRequest,
 	return &dataRes, statusCode, nil
 }
 
-func (s *Store) CreateInvoice(invoiceRequest *InvoiceRequest, ctx context.Context) (*InvoiceResponse, int, error) {
+func (s *Store) CreateInvoice(ctx context.Context, invoiceRequest *InvoiceRequest) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", s.Client.URL, s.ID)
 	dataReq, err := json.Marshal(invoiceRequest)
 	if err != nil {
@@ -211,7 +211,7 @@ func (s *Store) CreateInvoice(invoiceRequest *InvoiceRequest, ctx context.Contex
 }
 
 // Get a signle invoice from a single store.
-func (c *Client) GetInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx context.Context) (*InvoiceResponse, int, error) {
+func (c *Client) GetInvoice(ctx context.Context, storeID *StoreID, invoiceID *InvoiceID) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s", c.URL, *storeID, *invoiceID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func (c *Client) GetInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx context.
 	return &dataRes, statusCode, nil
 }
 
-func (s *Store) GetInvoice(invoiceID *InvoiceID, ctx context.Context) (*InvoiceResponse, int, error) {
+func (s *Store) GetInvoice(ctx context.Context, invoiceID *InvoiceID) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s", s.Client.URL, s.ID, *invoiceID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func (i *Invoice) GetInvoice(ctx context.Context) (*InvoiceResponse, int, error)
 }
 
 // Archive a single invoice of a store
-func (c *Client) ArchiveInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx context.Context) (int, error) {
+func (c *Client) ArchiveInvoice(ctx context.Context, storeID *StoreID, invoiceID *InvoiceID) (int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s", c.URL, *storeID, *invoiceID)
 	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func (c *Client) ArchiveInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx cont
 	return statusCode, nil
 }
 
-func (s *Store) ArchiveInvoice(invoiceID *InvoiceID, ctx context.Context) (int, error) {
+func (s *Store) ArchiveInvoice(ctx context.Context, invoiceID *InvoiceID) (int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s", s.Client.URL, s.ID, *invoiceID)
 	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {
@@ -310,7 +310,7 @@ type InvoiceUpdate struct {
 }
 
 // Update the metadata from an existing invoice
-func (c *Client) UpdateInvoice(storeID *StoreID, invoiceID *InvoiceID, invoiceUpdate *InvoiceUpdate, ctx context.Context) (*InvoiceResponse, int, error) {
+func (c *Client) UpdateInvoice(ctx context.Context, storeID *StoreID, invoiceID *InvoiceID, invoiceUpdate *InvoiceUpdate) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s", c.URL, *storeID, *invoiceID)
 	dataReq, err := json.Marshal(invoiceUpdate)
 	if err != nil {
@@ -332,7 +332,7 @@ func (c *Client) UpdateInvoice(storeID *StoreID, invoiceID *InvoiceID, invoiceUp
 	return &dataRes, statusCode, nil
 }
 
-func (s *Store) UpdateInvoice(invoiceID *InvoiceID, invoiceUpdate *InvoiceUpdate, ctx context.Context) (*InvoiceResponse, int, error) {
+func (s *Store) UpdateInvoice(ctx context.Context, invoiceID *InvoiceID, invoiceUpdate *InvoiceUpdate) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s", s.Client.URL, s.ID, *invoiceID)
 	dataReq, err := json.Marshal(invoiceUpdate)
 	if err != nil {
@@ -354,7 +354,7 @@ func (s *Store) UpdateInvoice(invoiceID *InvoiceID, invoiceUpdate *InvoiceUpdate
 	return &dataRes, statusCode, nil
 }
 
-func (i *Invoice) UpdateInvoice(invoiceUpdate *InvoiceUpdate, ctx context.Context) (*InvoiceResponse, int, error) {
+func (i *Invoice) UpdateInvoice(ctx context.Context, invoiceUpdate *InvoiceUpdate) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s", i.Client.URL, i.Store.ID, i.ID)
 	dataReq, err := json.Marshal(invoiceUpdate)
 	if err != nil {
@@ -381,7 +381,7 @@ type MarkInvoiceStatusRequest struct {
 }
 
 // Mark an invoice as invalid or settled.
-func (c *Client) MarkInvoiceStatus(storeID *StoreID, invoiceID *InvoiceID, markInvoiceStatusRequest *MarkInvoiceStatusRequest, ctx context.Context) (*InvoiceResponse, int, error) {
+func (c *Client) MarkInvoiceStatus(ctx context.Context, storeID *StoreID, invoiceID *InvoiceID, markInvoiceStatusRequest *MarkInvoiceStatusRequest) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s/status", c.URL, *storeID, *invoiceID)
 	dataReq, err := json.Marshal(markInvoiceStatusRequest)
 	if err != nil {
@@ -403,7 +403,7 @@ func (c *Client) MarkInvoiceStatus(storeID *StoreID, invoiceID *InvoiceID, markI
 	return &dataRes, statusCode, nil
 }
 
-func (s *Store) MarkInvoiceStatus(invoiceID *InvoiceID, markInvoiceStatusRequest *MarkInvoiceStatusRequest, ctx context.Context) (*InvoiceResponse, int, error) {
+func (s *Store) MarkInvoiceStatus(ctx context.Context, invoiceID *InvoiceID, markInvoiceStatusRequest *MarkInvoiceStatusRequest) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s/status", s.Client.URL, s.ID, *invoiceID)
 	dataReq, err := json.Marshal(markInvoiceStatusRequest)
 	if err != nil {
@@ -425,7 +425,7 @@ func (s *Store) MarkInvoiceStatus(invoiceID *InvoiceID, markInvoiceStatusRequest
 	return &dataRes, statusCode, nil
 }
 
-func (i *Invoice) MarkInvoiceStatus(markInvoiceStatusRequest *MarkInvoiceStatusRequest, ctx context.Context) (*InvoiceResponse, int, error) {
+func (i *Invoice) MarkInvoiceStatus(ctx context.Context, markInvoiceStatusRequest *MarkInvoiceStatusRequest) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s/status", i.Client.URL, i.Store.ID, i.ID)
 	dataReq, err := json.Marshal(markInvoiceStatusRequest)
 	if err != nil {
@@ -448,7 +448,7 @@ func (i *Invoice) MarkInvoiceStatus(markInvoiceStatusRequest *MarkInvoiceStatusR
 }
 
 // unarchive an invoice
-func (c *Client) UnarchiveInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx context.Context) (*InvoiceResponse, int, error) {
+func (c *Client) UnarchiveInvoice(ctx context.Context, storeID *StoreID, invoiceID *InvoiceID) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s/unarchive", c.URL, *storeID, *invoiceID)
 	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, nil)
 	if err != nil {
@@ -466,7 +466,7 @@ func (c *Client) UnarchiveInvoice(storeID *StoreID, invoiceID *InvoiceID, ctx co
 	return &dataRes, statusCode, nil
 }
 
-func (s *Store) UnarchiveInvoice(invoiceID *InvoiceID, ctx context.Context) (*InvoiceResponse, int, error) {
+func (s *Store) UnarchiveInvoice(ctx context.Context, invoiceID *InvoiceID) (*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s/unarchive", s.Client.URL, s.ID, *invoiceID)
 	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, nil)
 	if err != nil {

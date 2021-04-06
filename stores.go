@@ -104,7 +104,7 @@ type StoreRequest struct {
 }
 
 // create a new store
-func (c *Client) CreateStore(storeRequest *StoreRequest, ctx context.Context) (*StoreResponse, int, error) {
+func (c *Client) CreateStore(ctx context.Context, storeRequest *StoreRequest) (*StoreResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores", c.URL)
 	dataReq, err := json.Marshal(storeRequest)
 	if err != nil {
@@ -127,7 +127,7 @@ func (c *Client) CreateStore(storeRequest *StoreRequest, ctx context.Context) (*
 }
 
 // View information about the specified store
-func (c *Client) GetStore(storeID *StoreID, ctx context.Context) (*StoreResponse, int, error) {
+func (c *Client) GetStore(ctx context.Context, storeID *StoreID) (*StoreResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s", c.URL, *storeID)
 	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, nil)
 	if err != nil {
@@ -189,7 +189,7 @@ type StoreUpdate struct {
 	ID                           StoreID              `json:"id,omitempty"`
 }
 
-func (c *Client) UpdateStore(storeID *StoreID, storeUpdate *StoreUpdate, ctx context.Context) (*StoreResponse, int, error) {
+func (c *Client) UpdateStore(ctx context.Context, storeID *StoreID, storeUpdate *StoreUpdate) (*StoreResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s", c.URL, *storeID)
 	dataReq, err := json.Marshal(storeUpdate)
 	if err != nil {
@@ -211,7 +211,7 @@ func (c *Client) UpdateStore(storeID *StoreID, storeUpdate *StoreUpdate, ctx con
 	return &dataRes, statusCode, nil
 }
 
-func (s *Store) UpdateStore(storeUpdate *StoreUpdate, ctx context.Context) (*StoreResponse, int, error) {
+func (s *Store) UpdateStore(ctx context.Context, storeUpdate *StoreUpdate) (*StoreResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s", s.Client.URL, s.ID)
 	dataReq, err := json.Marshal(storeUpdate)
 	if err != nil {
@@ -234,7 +234,7 @@ func (s *Store) UpdateStore(storeUpdate *StoreUpdate, ctx context.Context) (*Sto
 }
 
 // Removes the specified store. If there is another user with access, only your access will be removed.
-func (c *Client) RemoveStore(storeID *StoreID, ctx context.Context) (int, error) {
+func (c *Client) RemoveStore(ctx context.Context, storeID *StoreID) (int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s", c.URL, *storeID)
 	req, err := http.NewRequestWithContext(ctx, "DELETE", endpoint, nil)
 	if err != nil {

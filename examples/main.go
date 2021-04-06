@@ -34,7 +34,26 @@ func main() {
 	//getInvoicesByStore(client, storeID)
 	//reateAndDeleteInvoice(client, storeID)
 
-	createNewStore(client)
+	//createNewStore(client)
+
+	//createNewUser(client)
+	//fmt.Println(client.GetUser(ctx))
+
+	langs, _, err := client.GetLanguageCodes(ctx)
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, v := range langs {
+		fmt.Println(v)
+	}
+}
+
+func createNewUser(c *btcpay.Client) {
+	fmt.Println(c.CreateUser(&btcpay.CreateUserRequest{
+		Email:           "test@test.com",
+		Password:        "asdfasdf",
+		IsAdministrator: false,
+	}, ctx))
 }
 
 func createNewStore(c *btcpay.Client) {

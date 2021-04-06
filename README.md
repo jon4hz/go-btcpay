@@ -4,7 +4,9 @@ _-- Work in progress --_
 A Golang SDK for the BTCPay Server [Greenfield API v1](https://docs.btcpayserver.org/API/Greenfield/v1/).
 
 ## 💡 About
-This package provies full access to the Greenfield API v1 from a BTCPayServer. Every API call returns a corresponding struct. It's possible to controll the individual calls by passing a context for each function and method.
+This package provies full access to the Greenfield API v1 from a BTCPayServer. Every API call returns a corresponding go struct.
+
+It's possible to controll the individual calls by passing a context for each function and method.
 
 ## 🚀 Getting Started
 
@@ -33,7 +35,7 @@ func main() {
 
     // Does the same but with a APIKey instead of basicAuth
     // Create a client with an APIKey
-    client2 := btcpay.CreateBasicClient("https://mybtcpayserver.com", btcpay.APIKey("myPersonalAPIKeyWithRestrictions")
+    client2 := btcpay.CreateBasicClient("https://mybtcpayserver.com", btcpay.APIKey("myAPIKey")
 
     // Print informations about the server, etc again but use the APIKey based client
     fmt.Println(client2.GetServerInfo(ctx))

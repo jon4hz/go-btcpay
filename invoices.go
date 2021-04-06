@@ -124,7 +124,7 @@ type InvoiceCheckout struct {
 }
 
 // Get an array of all Invoices from a single store.
-func (c *Client) GetInvoices(storeID *StoreID, ctx context.Context) (*[]InvoiceResponse, int, error) {
+func (c *Client) GetInvoices(storeID *StoreID, ctx context.Context) ([]*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", c.URL, *storeID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
@@ -134,16 +134,16 @@ func (c *Client) GetInvoices(storeID *StoreID, ctx context.Context) (*[]InvoiceR
 	if err != nil {
 		return nil, statusCode, err
 	}
-	var dataRes []InvoiceResponse
+	var dataRes []*InvoiceResponse
 	err = json.Unmarshal(bytes, &dataRes)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	return &dataRes, statusCode, nil
+	return dataRes, statusCode, nil
 }
 
-func (s *Store) GetInvoices(ctx context.Context) (*[]InvoiceResponse, int, error) {
+func (s *Store) GetInvoices(ctx context.Context) ([]*InvoiceResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices", s.Client.URL, s.ID)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
@@ -153,13 +153,13 @@ func (s *Store) GetInvoices(ctx context.Context) (*[]InvoiceResponse, int, error
 	if err != nil {
 		return nil, statusCode, err
 	}
-	var dataRes []InvoiceResponse
+	var dataRes []*InvoiceResponse
 	err = json.Unmarshal(bytes, &dataRes)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	return &dataRes, statusCode, nil
+	return dataRes, statusCode, nil
 }
 
 type InvoiceRequest struct {

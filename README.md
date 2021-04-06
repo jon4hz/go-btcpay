@@ -66,7 +66,7 @@ if err != nil {
 Calling the method `CreateInvoice()` works for variable of type *btcpay.Store, too.
 ```go
 // by passing the store from the previously created client, the new store (*btcpay.Store) contains 
-// a pointer  back to the inital client 
+// a pointer  back to the initial client 
 store = client.Store
 // assign a storeID to the store
 store.ID = btcpay.StoreID("YourStoreID")

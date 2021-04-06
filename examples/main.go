@@ -38,6 +38,7 @@ func main() {
 
 	//createNewUser(client)
 	//fmt.Println(client.GetUser(ctx))
+	fmt.Println((&btcpay.Client{URL: client.URL}).GetLanguageCodes(ctx))
 
 	langs, _, err := client.GetLanguageCodes(ctx)
 	if err != nil {

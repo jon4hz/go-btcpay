@@ -11,16 +11,16 @@ import (
 // WIP, needs testing
 
 type AuthorizationRequest struct {
-	Permissions           []Permission `json:"permissions,omitempty"`
-	ApplicationName       string       `json:"applicationName,omitempty"`
-	Strict                bool         `json:"strict,omitempty"`
-	SelectiveStores       bool         `json:"selectiveStores,omitempty"`
-	Redirect              string       `json:"redirect,omitempty"`
-	ApplicationIdentifier string       `json:"applicationIdentifier,omitempty"`
+	Permissions           []BTCPayPermission `json:"permissions,omitempty"`
+	ApplicationName       string             `json:"applicationName,omitempty"`
+	Strict                bool               `json:"strict,omitempty"`
+	SelectiveStores       bool               `json:"selectiveStores,omitempty"`
+	Redirect              string             `json:"redirect,omitempty"`
+	ApplicationIdentifier string             `json:"applicationIdentifier,omitempty"`
 }
 
 func (c *Client) Authorize(authRequest *AuthorizationRequest, ctx context.Context) (int, error) {
-	endpoint := fmt.Sprintf("%s/api/v1/authorize", c.URL)
+	endpoint := fmt.Sprintf("%s/api-keys/authorize", c.URL)
 	dataReq, err := json.Marshal(authRequest)
 	if err != nil {
 		return 0, err

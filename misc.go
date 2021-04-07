@@ -12,7 +12,7 @@ type LanguageCodesRespose struct {
 	CurrentLanguage string `json:"currentLanguage"`
 }
 
-// Bug?
+// Bug
 func (c *Client) GetLanguageCodes(ctx context.Context) ([]*LanguageCodesRespose, int, error) {
 	endpoint := fmt.Sprintf("%s/misc/lang", c.URL)
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
@@ -34,6 +34,8 @@ func (c *Client) GetLanguageCodes(ctx context.Context) ([]*LanguageCodesRespose,
 type InvoiceCheckoutPage struct {
 	Page []byte
 }
+
+// todo add support for lang
 
 // View the checkout page of an invoice
 func (c *Client) GetInvoiceCheckoutPage(ctx context.Context, invoiceID *InvoiceID) (*InvoiceCheckoutPage, int, error) {

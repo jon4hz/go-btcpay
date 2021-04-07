@@ -74,7 +74,6 @@ func (c *Client) GetStores(ctx context.Context) ([]*StoreResponse, int, error) {
 	if err != nil {
 		return nil, 0, err
 	}
-
 	return dataRes, statusCode, nil
 }
 

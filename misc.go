@@ -35,11 +35,15 @@ type InvoiceCheckoutPage struct {
 	Page []byte
 }
 
-// todo add support for lang
-
 // View the checkout page of an invoice
-func (c *Client) GetInvoiceCheckoutPage(ctx context.Context, invoiceID *InvoiceID) (*InvoiceCheckoutPage, int, error) {
-	endpoint := fmt.Sprintf("%s/i/%s", c.URL, *invoiceID)
+func (c *Client) GetInvoiceCheckoutPage(ctx context.Context, invoiceID *InvoiceID, lang ...string) (*InvoiceCheckoutPage, int, error) {
+	var endpoint string
+	if len(lang) > 0 {
+		fmt.Println(lang[0])
+		endpoint = fmt.Sprintf("%s/i/%s?lang=%s", c.URL, *invoiceID, lang[0])
+	} else {
+		endpoint = fmt.Sprintf("%s/i/%s", c.URL, *invoiceID)
+	}
 	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
 	if err != nil {
 		return nil, 0, err

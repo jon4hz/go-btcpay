@@ -376,6 +376,104 @@ func (i *Invoice) UpdateInvoice(ctx context.Context, invoiceUpdate *InvoiceUpdat
 	return &dataRes, statusCode, nil
 }
 
+// Enums PaymentStatus
+type BTCPayPaymentStatus string
+
+type PaymentStatus struct {
+	New        BTCPayPaymentStatus
+	Processing BTCPayPaymentStatus
+	Expired    BTCPayPaymentStatus
+	Invalid    BTCPayPaymentStatus
+	Settled    BTCPayPaymentStatus
+}
+
+func GetPaymentStatus() *PaymentStatus {
+	return &PaymentStatus{
+		Processing: "Processing",
+		Invalid:    "Invalid",
+		Settled:    "Settled",
+	}
+}
+
+type PaymentID string
+
+type Payment struct {
+	ID           PaymentID           `json:"id"`
+	ReceivedDate int64               `json:"receivedDate"`
+	Value        string              `json:"value"`
+	Fee          string              `json:"fee"`
+	Status       BTCPayPaymentStatus `json:"status"`
+	Destination  string              `json:"destination"`
+}
+
+type InvoicePaymentMethodResponse struct {
+	PaymentMethod     string    `json:"paymentMethod"`
+	Destination       string    `json:"destination"`
+	PaymentLink       string    `json:"paymentLink,omitempty"`
+	Rate              string    `json:"rate"`
+	PaymentMethodPaid string    `json:"paymentMethodPaid"`
+	TotalPaid         string    `json:"totalPaid"`
+	Due               string    `json:"due"`
+	Amount            string    `json:"amount"`
+	NetworkFee        string    `json:"networkFee"`
+	Payments          []Payment `json:"payments"`
+}
+
+// View information about the specified invoice's payment methods
+func (c *Client) GetInvoicePaymentMethod(ctx context.Context, storeID *StoreID, invoiceID *InvoiceID) ([]*InvoicePaymentMethodResponse, int, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s/payment-methods", c.URL, *storeID, *invoiceID)
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
+	if err != nil {
+		return nil, 0, err
+	}
+	bytes, statusCode, err := c.doRequest(req)
+	if err != nil {
+		return nil, statusCode, err
+	}
+	var dataRes []*InvoicePaymentMethodResponse
+	err = json.Unmarshal(bytes, &dataRes)
+	if err != nil {
+		return nil, 0, err
+	}
+	return dataRes, statusCode, nil
+}
+
+func (s *Store) GetInvoicePaymentMethod(ctx context.Context, invoiceID *InvoiceID) ([]*InvoicePaymentMethodResponse, int, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s/payment-methods", s.Client.URL, s.ID, *invoiceID)
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
+	if err != nil {
+		return nil, 0, err
+	}
+	bytes, statusCode, err := s.Client.doRequest(req)
+	if err != nil {
+		return nil, statusCode, err
+	}
+	var dataRes []*InvoicePaymentMethodResponse
+	err = json.Unmarshal(bytes, &dataRes)
+	if err != nil {
+		return nil, 0, err
+	}
+	return dataRes, statusCode, nil
+}
+
+func (i *Invoice) GetInvoicePaymentMethod(ctx context.Context) ([]*InvoicePaymentMethodResponse, int, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/invoices/%s/payment-methods", i.Client.URL, i.Store.ID, i.ID)
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
+	if err != nil {
+		return nil, 0, err
+	}
+	bytes, statusCode, err := i.Client.doRequest(req)
+	if err != nil {
+		return nil, statusCode, err
+	}
+	var dataRes []*InvoicePaymentMethodResponse
+	err = json.Unmarshal(bytes, &dataRes)
+	if err != nil {
+		return nil, 0, err
+	}
+	return dataRes, statusCode, nil
+}
+
 type MarkInvoiceStatusRequest struct {
 	Status BTCPayInvoiceStatusMark `json:"status"`
 }

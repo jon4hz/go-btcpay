@@ -91,16 +91,16 @@ initialented endpoints.
 
 Endpoint                                     |              Status
 |:-------------------------------------------|:-------------------|
-|`/api/v1/api-keys`                          | ✅ fully implemented
-|`/api-keys/authorize`                       | ⚡️ testing required 
-|`/api/v1/health`                            | ✅ fully implemented
-|`/api/v1/server/info`                       | ✅ fully implemented
-|`/api/v1/users`                             | ✅ fully implemented
-|`/api/v1/stores`                            | ✅ fully implemented
-|`/api/v1/stores/{storeId}/invoices`         | ✅ fully implemented
-|`/api/v1/stores/{storeId}/payment-requests` | ✅ fully implemented
+|`/api/v1/api-keys`                          | ✅ Fully implemented
+|`/api-keys/authorize`                       | ⚡️ Testing required 
+|`/api/v1/health`                            | ✅ Fully implemented
+|`/api/v1/server/info`                       | ✅ Fully implemented
+|`/api/v1/users`                             | ✅ Fully implemented
+|`/api/v1/stores`                            | ✅ Fully implemented
+|`/api/v1/stores/{storeId}/invoices`         | ✅ Fully implemented
+|`/api/v1/stores/{storeId}/payment-requests` | ✅ Fully implemented
 |`/misc/lang`                                | ❌ Not working, [issue](https://github.com/btcpayserver/btcpayserver/issues/2437)
-|`/i`                                        | ⚠️ partially implemented
+|`/i`                                        | ✅ Fully implementedd
 |`/api/v1/users/me/notifications`            | ⏳ Work in progress
 
 

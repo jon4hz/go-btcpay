@@ -4,7 +4,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -21,7 +20,6 @@ func main() {
 		log.Fatal(err)
 	}
 	client := btcpay.NewBasicClient(config.BTCPay.URL, config.BTCPay.Username, config.BTCPay.Password)
-
 	/* cont, cancel := context.WithTimeout(ctx, 1)
 	defer cancel()
 	fmt.Println(client.GetHealth(cont)) */
@@ -54,8 +52,44 @@ func main() {
 	} */
 
 	//createPrintPageDeleteInvoice(client, &storeID)
-	testStruct()
 	getPaymentRequests(client, &storeID)
+
+	//GetNotifications(client)
+	//getAndDeleteNotification(client)
+}
+
+func getAndDeleteNotification(c *btcpay.Client) {
+	notifications, _, err := c.GetNotifications(ctx)
+	if err != nil {
+		panic(err)
+	}
+	nClient := c.Notification
+	if len(notifications) > 0 {
+		nClient.ID = notifications[0].ID
+
+		fmt.Print(nClient.RemoveNotification(ctx))
+	}
+}
+
+func getAndPutNotification(c *btcpay.Client) {
+	notifications, _, err := c.GetNotifications(ctx)
+	if err != nil {
+		panic(err)
+	}
+	nClient := c.Notification
+	nClient.ID = notifications[0].ID
+
+	fmt.Print(nClient.UpdateNotification(ctx))
+}
+
+func GetNotifications(c *btcpay.Client) {
+	notifications, _, err := c.GetNotifications(ctx)
+	if err != nil {
+		panic(err)
+	}
+	for _, v := range notifications {
+		fmt.Println(v)
+	}
 }
 
 func getPaymentRequests(c *btcpay.Client, storeID *btcpay.StoreID) {
@@ -65,16 +99,23 @@ func getPaymentRequests(c *btcpay.Client, storeID *btcpay.StoreID) {
 	}
 	for _, v := range paymentRequests {
 		fmt.Println(v)
+		c.ArchivePaymentRequest(ctx, storeID, &v.ID)
 	}
 
 }
 
 func createPrintPageDeleteInvoice(c *btcpay.Client, storeID *btcpay.StoreID) {
-	invoice, _, _ := c.CreateInvoice(ctx, storeID, &btcpay.InvoiceRequest{
+	invoice, _, err := c.CreateInvoice(ctx, storeID, &btcpay.InvoiceRequest{
 		Amount:   "10",
 		Currency: "USD",
 	})
-	page, _, _ := c.GetInvoiceCheckoutPage(ctx, &invoice.ID)
+	if err != nil {
+		panic(err)
+	}
+	page, _, err := c.GetInvoiceCheckoutPage(ctx, &invoice.ID, "de-DE")
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(string(page.Page))
 	invoiceC := c.Invoice
 	invoiceC.ID = invoice.ID
@@ -170,24 +211,4 @@ func createAndDeleteCurrentAPIKey(client *btcpay.Client) {
 	fmt.Println(client.GetCurrentAPIKey(ctx))
 	time.Sleep(10 * time.Second)
 	client.RevokeCurrentAPIKey(ctx)
-}
-
-func testStruct() {
-	type testStruct2 struct {
-		Data  int  `json:"data"`
-		Valid bool `json:"valid"`
-	}
-
-	type testStruct struct {
-		X []testStruct2
-	}
-
-	data := `{"x1": {"data": 1, "valid": true}, "x2":{"data": 2, "valid": false}}`
-
-	var test testStruct
-	err := json.Unmarshal([]byte(data), &test)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(test.X)
 }

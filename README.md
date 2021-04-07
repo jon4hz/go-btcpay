@@ -96,13 +96,14 @@ Endpoint                                     |              Status
 |`/api/v1/health`                            | ✅ Fully implemented
 |`/api/v1/server/info`                       | ✅ Fully implemented
 |`/api/v1/users`                             | ✅ Fully implemented
-|`/api/v1/stores`                            | ✅ Fully implemented
+|`/api/v1/users/me/notifications`            | ✅ Fully implemented
+|`/api/v1/stores`                            | ⚠️ Partially implemented
 |`/api/v1/stores/{storeId}/invoices`         | ✅ Fully implemented
 |`/api/v1/stores/{storeId}/payment-requests` | ✅ Fully implemented
+|`/api/v1/stores/{storeId}/pull-payments`    | ⏳ Work in progress
 |`/misc/lang`                                | ❌ Not working, [issue](https://github.com/btcpayserver/btcpayserver/issues/2437)
 |`/i`                                        | ✅ Fully implemented
-|`/api/v1/users/me/notifications`            | ✅ Fully implemented
-|`/api/v1/stores/{storeId}/pull-payments`    | ⏳ Work in progress
+|`/api/v1/pull-payments`                     | ⏳ Work in progress
 
 
 ## 📜 Licensing

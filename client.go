@@ -19,6 +19,7 @@ type Client struct {
 	Invoice        *Invoice
 	PaymentRequest *PaymentRequest
 	Notification   *Notification
+	PullPayment    *PullPayment
 }
 
 func NewClient(url string, apiKey APIKey) *Client {
@@ -29,6 +30,7 @@ func NewClient(url string, apiKey APIKey) *Client {
 	client.Store = &Store{Client: client}
 	client.Invoice = &Invoice{Client: client, Store: client.Store}
 	client.PaymentRequest = &PaymentRequest{Client: client, Store: client.Store}
+	client.PullPayment = &PullPayment{Client: client, Store: client.Store}
 	client.Notification = &Notification{Client: client}
 	return client
 }
@@ -42,6 +44,7 @@ func NewBasicClient(url, username, password string) *Client {
 	client.Store = &Store{Client: client}
 	client.Invoice = &Invoice{Client: client, Store: client.Store}
 	client.PaymentRequest = &PaymentRequest{Client: client, Store: client.Store}
+	client.PullPayment = &PullPayment{Client: client, Store: client.Store}
 	client.Notification = &Notification{Client: client}
 	return client
 }

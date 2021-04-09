@@ -167,3 +167,115 @@ func (p *PullPayment) ArchivePullPayment(ctx context.Context) (int, error) {
 	}
 	return statusCode, nil
 }
+
+// Enums NetworkFeeMode
+type BTCPayPullPaymentStatus string
+
+type PullPaymentStatus struct {
+	AwaitingApproval BTCPayPullPaymentStatus
+	AwaitingPayment  BTCPayPullPaymentStatus
+	InProgress       BTCPayPullPaymentStatus
+	Completed        BTCPayPullPaymentStatus
+	Cancelled        BTCPayPullPaymentStatus
+}
+
+func GetPullPaymentStatus() *PullPaymentStatus {
+	return &PullPaymentStatus{
+		AwaitingApproval: "AwaitingApproval",
+		AwaitingPayment:  "AwaitingPayment",
+		InProgress:       "InProgress",
+		Completed:        "Completed",
+		Cancelled:        "Cancelled",
+	}
+}
+
+type PayoutID string
+
+type Payout struct {
+	Store  *Store
+	Client *Client
+	ID     PayoutID
+}
+
+type PayoutResponse struct {
+	ID                  PayoutID      `json:"id"`
+	Revision            int64         `json:"revision"`
+	PullPaymentID       PullPaymentID `json:"pullPaymentId"`
+	Date                string        `json:"date"`
+	Destination         string        `json:"destination"`
+	Amount              string        `json:"amount"`
+	PaymentMethod       string        `json:"paymentMethod"`
+	PaymentMethodAmount string        `json:"paymentMethodAmount"`
+}
+
+type PayoutRequest struct {
+	Revision int64  `json:"revision"`
+	RateRule string `json:"rateRule,omitempty"`
+}
+
+// Approve a payout
+func (c *Client) ApprovePayout(ctx context.Context, storeID *StoreID, payoutID *PayoutID, payoutRequest *PayoutRequest) (*PayoutResponse, int, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payouts/%s", c.URL, *storeID, *payoutID)
+	dataReq, err := json.Marshal(payoutRequest)
+	if err != nil {
+		return nil, 0, err
+	}
+	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, bytes.NewBuffer(dataReq))
+	if err != nil {
+		return nil, 0, err
+	}
+	bytes, statusCode, err := c.doRequest(req)
+	if err != nil {
+		return nil, statusCode, err
+	}
+	var dataRes PayoutResponse
+	err = json.Unmarshal(bytes, &dataRes)
+	if err != nil {
+		return nil, 0, err
+	}
+	return &dataRes, statusCode, nil
+}
+
+func (s *Store) ApprovePayout(ctx context.Context, payoutID *PayoutID, payoutRequest *PayoutRequest) (*PayoutResponse, int, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payouts/%s", s.Client.URL, s.ID, *payoutID)
+	dataReq, err := json.Marshal(payoutRequest)
+	if err != nil {
+		return nil, 0, err
+	}
+	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, bytes.NewBuffer(dataReq))
+	if err != nil {
+		return nil, 0, err
+	}
+	bytes, statusCode, err := s.Client.doRequest(req)
+	if err != nil {
+		return nil, statusCode, err
+	}
+	var dataRes PayoutResponse
+	err = json.Unmarshal(bytes, &dataRes)
+	if err != nil {
+		return nil, 0, err
+	}
+	return &dataRes, statusCode, nil
+}
+
+func (p *Payout) ApprovePayout(ctx context.Context, payoutRequest *PayoutRequest) (*PayoutResponse, int, error) {
+	endpoint := fmt.Sprintf("%s/api/v1/stores/%s/payouts/%s", p.Client.URL, p.Store.ID, p.ID)
+	dataReq, err := json.Marshal(payoutRequest)
+	if err != nil {
+		return nil, 0, err
+	}
+	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, bytes.NewBuffer(dataReq))
+	if err != nil {
+		return nil, 0, err
+	}
+	bytes, statusCode, err := p.Client.doRequest(req)
+	if err != nil {
+		return nil, statusCode, err
+	}
+	var dataRes PayoutResponse
+	err = json.Unmarshal(bytes, &dataRes)
+	if err != nil {
+		return nil, 0, err
+	}
+	return &dataRes, statusCode, nil
+}

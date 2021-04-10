@@ -24,15 +24,16 @@ func main() {
 	/* cont, cancel := context.WithTimeout(ctx, 1)
 	defer cancel()
 	fmt.Println(client.GetHealth(cont)) */
-	//fmt.Println(client.GetServerInfo(ctx))
+	fmt.Println(client.GetServerInfo(ctx))
 
 	// get store id
-	stores, _, err := client.GetStores(ctx)
+
+	/* stores, _, err := client.GetStores(ctx)
 	if err != nil {
 		panic(err)
 	}
 	storeID := getStoreID(stores)
-	createInvoiceByStoreGetAndDeleteInvoiceByID(client, storeID)
+	createInvoiceByStoreGetAndDeleteInvoiceByID(client, storeID) */
 
 	//getInvoicesByStore(client, storeID)
 	//reateAndDeleteInvoice(client, storeID)
@@ -53,7 +54,8 @@ func main() {
 	} */
 
 	//createPrintPageDeleteInvoice(client, &storeID)
-	getPaymentRequests(client, &storeID)
+
+	//getPaymentRequests(client, &storeID)
 
 	//GetNotifications(client)
 	//getAndDeleteNotification(client)

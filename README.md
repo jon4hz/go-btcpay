@@ -89,22 +89,22 @@ _[more examples will follow soon]_
 
 initialented endpoints.
 
-Endpoint                                     |              Status
-|:-------------------------------------------|:-------------------|
-|`/api/v1/api-keys`                          | ✅ Fully implemented
-|`/api-keys/authorize`                       | ⚡️ Testing required 
-|`/api/v1/health`                            | ✅ Fully implemented
-|`/api/v1/server/info`                       | ✅ Fully implemented
-|`/api/v1/users`                             | ✅ Fully implemented
-|`/api/v1/users/me/notifications`            | ✅ Fully implemented
-|`/api/v1/stores`                            | ⚠️ Partially implemented
-|`/api/v1/stores/{storeId}/invoices`         | ✅ Fully implemented
-|`/api/v1/stores/{storeId}/payment-requests` | ✅ Fully implemented
-|`/api/v1/stores/{storeId}/pull-payments`    | ⏳ Work in progress
-|`/misc/lang`                                | ❌ Not working, [issue](https://github.com/btcpayserver/btcpayserver/issues/2437)
-|`/i`                                        | ✅ Fully implemented
-|`/api/v1/pull-payments`                     | ⏳ Work in progress
-
+Endpoint                                                                   |              Status
+|:-------------------------------------------------------------------------|:-------------------|
+|`/api/v1/api-keys`                                                        | ✅ Fully implemented
+|`/api-keys/authorize`                                                     | ⚡️ Testing required 
+|`/api/v1/health`                                                          | ✅ Fully implemented
+|`/api/v1/server/info`                                                     | ✅ Fully implemented
+|`/api/v1/users`                                                           | ✅ Fully implemented
+|`/api/v1/users/me/notifications`                                          | ✅ Fully implemented
+|`/api/v1/stores`                                                          | ⚠️ Partially implemented
+|`/api/v1/stores/{storeId}/invoices`                                       | ✅ Fully implemented
+|`/api/v1/stores/{storeId}/payment-requests                              ` | ✅ Fully implemented
+|`/api/v1/stores/{storeId}/pull-payments`                                  | ✅ Fully implemented
+|`/api/v1/stores/{storeId}/payment-methods/OnChain/{cryptoCode}/wallet`    | ⏳ Work in progress
+|`/misc/lang`                                                              | ❌ Not working, [issue](https://github.com/btcpayserver/btcpayserver/issues/2437)
+|`/i`                                                                      | ✅ Fully implemented
+|`/api/v1/pull-payments`                                                   | ✅ Fully implemented
 
 ## 📜 Licensing
 This SDK is released under the MIT-License found in the [LICENSE](https://github.com/jon4hz/go-btcpay/blob/master/LICENSE) file.

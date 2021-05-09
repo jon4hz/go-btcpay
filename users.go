@@ -1,67 +1,27 @@
 package btcpay
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
-	"net/http"
 )
-
-type UserID string
-
-type UserResponse struct {
-	ID                        UserID   `json:"id"`
-	Email                     string   `json:"email"`
-	EmailConfirmed            bool     `json:"emailConfirmed"`
-	RequiresEmailConfirmation bool     `json:"requiresEmailConfirmation"`
-	Created                   int64    `json:"created,omitempty"`
-	Roles                     []string `json:"roles"`
-}
 
 // View information about the current user
 func (c *Client) GetUser(ctx context.Context) (*UserResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/users/me", c.URL)
-	req, err := http.NewRequestWithContext(ctx, "GET", endpoint, nil)
-	if err != nil {
-		return nil, 0, err
-	}
-	bytes, statusCode, err := c.doRequest(req)
+	var dataRes UserResponse
+	statusCode, err := c.doRequest(ctx, endpoint, "GET", &dataRes, nil)
 	if err != nil {
 		return nil, statusCode, err
-	}
-	var dataRes UserResponse
-	err = json.Unmarshal(bytes, &dataRes)
-	if err != nil {
-		return nil, 0, err
 	}
 	return &dataRes, statusCode, nil
 }
 
-type UserRequest struct {
-	Email           string `json:"email"`
-	Password        string `json:"password"`
-	IsAdministrator bool   `json:"isAdministrator"`
-}
-
 func (c *Client) CreateUser(ctx context.Context, userRequest *UserRequest) (*UserResponse, int, error) {
 	endpoint := fmt.Sprintf("%s/api/v1/users", c.URL)
-	dataReq, err := json.Marshal(userRequest)
-	if err != nil {
-		return nil, 0, err
-	}
-	req, err := http.NewRequestWithContext(ctx, "POST", endpoint, bytes.NewBuffer(dataReq))
-	if err != nil {
-		return nil, 0, err
-	}
-	bytes, statusCode, err := c.doRequest(req)
+	var dataRes UserResponse
+	statusCode, err := c.doRequest(ctx, endpoint, "POST", &dataRes, &userRequest)
 	if err != nil {
 		return nil, statusCode, err
-	}
-	var dataRes UserResponse
-	err = json.Unmarshal(bytes, &dataRes)
-	if err != nil {
-		return nil, 0, err
 	}
 	return &dataRes, statusCode, nil
 }

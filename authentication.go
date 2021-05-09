@@ -2,6 +2,7 @@ package btcpay
 
 import "fmt"
 
+// Enums BTCPayPermission
 type BTCPayPermission string
 
 type Permission struct {

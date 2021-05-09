@@ -31,14 +31,14 @@ func main() {
     ctx := context.Background()
 
     // Create a basicAuth client
-    client := btcpay.CreateBasicClient("https://mybtcpayserver.com", "myUsername", "myPassword")
+    client := btcpay.NewBasicClient("https://mybtcpayserver.com", "myUsername", "myPassword")
 
     // Print informations about the server, etc
     fmt.Println(client.GetServerInfo(ctx))
 
     // Does the same but with an APIKey instead of basicAuth
     // Create a client with an APIKey
-    client2 := btcpay.CreateBasicClient("https://mybtcpayserver.com", btcpay.APIKey("myAPIKey")
+    client2 := btcpay.NewClient("https://mybtcpayserver.com", btcpay.APIKey("myAPIKey")
 
     // Print informations about the server, etc again but use the APIKey based client
     fmt.Println(client2.GetServerInfo(ctx))
@@ -102,7 +102,7 @@ Endpoint                                                                   |    
 |`/api/v1/stores/{storeId}/payment-requests                              ` | ✅ Fully implemented
 |`/api/v1/stores/{storeId}/pull-payments`                                  | ✅ Fully implemented
 |`/api/v1/stores/{storeId}/payment-methods/OnChain/{cryptoCode}/wallet`    | ⏳ Work in progress
-|`/misc/lang`                                                              | ❌ Not working, [issue](https://github.com/btcpayserver/btcpayserver/issues/2437)
+|`/misc/lang`                                                              | ✅ Fully implemented
 |`/i`                                                                      | ✅ Fully implemented
 |`/api/v1/pull-payments`                                                   | ✅ Fully implemented
 

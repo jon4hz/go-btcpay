@@ -3,30 +3,19 @@ package btcpay
 // WIP (webhooks?)
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
-type APIKey string
-
-type Client struct {
-	URL            string
-	APIKey         APIKey
-	Username       string
-	Password       string
-	Store          *Store
-	Invoice        *Invoice
-	PaymentRequest *PaymentRequest
-	Notification   *Notification
-	PullPayment    *PullPayment
-	Payout         *Payout
-}
-
 func NewClient(url string, apiKey APIKey) *Client {
 	client := &Client{
 		URL:    url,
 		APIKey: apiKey,
+		Http:   &http.Client{},
 	}
 	client.Store = &Store{Client: client}
 	client.Invoice = &Invoice{Client: client, Store: client.Store}
@@ -42,6 +31,7 @@ func NewBasicClient(url, username, password string) *Client {
 		URL:      url,
 		Username: username,
 		Password: password,
+		Http:     &http.Client{},
 	}
 	client.Store = &Store{Client: client}
 	client.Invoice = &Invoice{Client: client, Store: client.Store}
@@ -52,13 +42,76 @@ func NewBasicClient(url, username, password string) *Client {
 	return client
 }
 
-func (c *Client) doRequest(req *http.Request) ([]byte, int, error) {
-	if len(c.APIKey) > 0 {
-		req.Header.Set("Authorization", fmt.Sprintf("token %s", c.APIKey))
-	} else if len(c.Username) > 0 && len(c.Password) > 0 {
-		req.SetBasicAuth(c.Username, c.Password)
+func setHeaders(c *Client, r *http.Request) {
+	if len(c.Username) > 0 && len(c.Password) > 0 {
+		r.SetBasicAuth(c.Username, c.Password)
+	} else if len(c.APIKey) > 0 {
+		r.Header.Set("Authorization", fmt.Sprintf("token %s", c.APIKey))
 	}
-	req.Header.Set("Content-Type", "application/json")
+	r.Header.Set("Content-Type", "application/json")
+}
+
+func setQueryParam(endpoint *string, params []map[string]interface{}) {
+	for _, param := range params {
+		for i := range param {
+			*endpoint = fmt.Sprintf("%s?%s=%v", *endpoint, i, param[i])
+		}
+	}
+}
+
+func (c *Client) doRequest(ctx context.Context, endpoint, method string, expRes interface{}, reqData interface{}, opts ...map[string]interface{}) (int, error) {
+
+	var dataReq []byte
+	var err error
+
+	if reqData != nil {
+		dataReq, err = json.Marshal(reqData)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	if len(opts) > 0 && len(opts[0]) > 0 {
+		setQueryParam(&endpoint, opts)
+	}
+	fmt.Println(endpoint)
+	req, err := http.NewRequestWithContext(ctx, method, endpoint, bytes.NewBuffer(dataReq))
+	if err != nil {
+		return 0, err
+	}
+
+	setHeaders(c, req)
+
+	resp, err := c.Http.Do(req)
+	if err != nil {
+		return 0, err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return 0, err
+	}
+
+	switch resp.StatusCode {
+	case 200:
+		if expRes != nil {
+			err = json.Unmarshal(body, expRes)
+			if err != nil {
+				return 0, err
+			}
+		}
+		return resp.StatusCode, nil
+
+	default:
+		return resp.StatusCode, fmt.Errorf("%s", body)
+	}
+}
+
+func (c *Client) doSimpleRequest(req *http.Request) ([]byte, int, error) {
+
+	setHeaders(c, req)
+
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
